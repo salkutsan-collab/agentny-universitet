@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Агентный университет: карта будущего</title>
+<style>
+:root{
+  --blue:#123a6b;
+  --blue-2:#1d4f8f;
+  --blue-soft:#eaf0f8;
+  --orange:#e5701a;
+  --orange-soft:#fdefe2;
+  --ink:#1c2530;
+  --muted:#5a6572;
+  --line:#dce1e8;
+  --bg:#f5f7fa;
+  --card:#ffffff;
+  --green:#2f7d4f;
+  --amber:#b9791b;
+  --red:#b23a3a;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color:var(--ink);
+  background:var(--bg);
+  line-height:1.55;
+  font-size:16px;
+  -webkit-text-size-adjust:100%;
+}
+h1,h2,h3,h4{line-height:1.25;color:var(--blue);margin:0 0 .5em}
+h2{font-size:1.5rem;border-bottom:2px solid var(--blue-soft);padding-bottom:.3em;margin-top:.2em}
+h3{font-size:1.15rem;color:var(--blue-2)}
+p{margin:0 0 .8em}
+a{color:var(--blue-2)}
+small{color:var(--muted)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 18px}
+
+/* header */
+header.site{
+  background:var(--blue);
+  color:#fff;
+  position:sticky;top:0;z-index:50;
+  box-shadow:0 1px 6px rgba(0,0,0,.18);
+}
+header.site .wrap{padding-top:14px;padding-bottom:0}
+.brand{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 16px;justify-content:space-between}
+.brand h1{color:#fff;font-size:1.35rem;margin:0}
+.brand .tag{color:#cfe0f5;font-size:.9rem}
+.btn-print{
+  background:var(--orange);color:#fff;border:0;border-radius:6px;
+  padding:8px 14px;font-size:.9rem;cursor:pointer;font-weight:600;white-space:nowrap;
+}
+.btn-print:hover{background:#cf6011}
+nav.tabs{display:flex;flex-wrap:wrap;gap:2px;margin-top:12px}
+nav.tabs button{
+  background:transparent;border:0;color:#cfe0f5;
+  padding:10px 12px;font-size:.92rem;cursor:pointer;
+  border-bottom:3px solid transparent;font-family:inherit;
+}
+nav.tabs button:hover{color:#fff}
+nav.tabs button.active{color:#fff;border-bottom-color:var(--orange);font-weight:600}
+
+/* sections */
+main{padding:26px 0 10px}
+.panel{display:none;animation:fade .25s ease}
+.panel.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.lead{font-size:1.08rem;color:var(--muted);max-width:70ch}
+
+/* generic card */
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:16px 18px;margin:0 0 14px;
+}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:820px){.g2,.g3,.g4{grid-template-columns:1fr}}
+@media(max-width:820px){.g4.keep2{grid-template-columns:repeat(2,1fr)}}
+
+/* HERO tiles */
+.formula{
+  background:var(--orange-soft);border-left:4px solid var(--orange);
+  padding:14px 18px;border-radius:0 8px 8px 0;font-size:1.15rem;font-weight:600;color:var(--blue);
+  margin:0 0 22px;
+}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 22px}
+@media(max-width:820px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{background:var(--blue);color:#fff;border-radius:10px;padding:16px}
+.tile .num{font-size:1.55rem;font-weight:700;color:#fff;line-height:1.15}
+.tile .lbl{font-size:.82rem;color:#cfe0f5;margin-top:6px}
+.tile.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.tile.alt .num{color:var(--orange)}
+.tile.alt .lbl{color:var(--muted)}
+
+.callout{background:var(--blue-soft);border-radius:10px;padding:16px 18px;margin:0 0 16px}
+.callout h3{margin-top:0}
+.two-def{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:820px){.two-def{grid-template-columns:1fr}}
+.def{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:#fff}
+.def h4{color:var(--orange);margin:0 0 .3em}
+
+/* badges */
+.badge{display:inline-block;font-size:.74rem;font-weight:600;padding:2px 8px;border-radius:20px;vertical-align:middle}
+.b3{background:#dff0e4;color:var(--green)}
+.b2{background:#fbe7cf;color:var(--amber)}
+.b1{background:#e7ecf3;color:var(--blue-2)}
+.chip{display:inline-block;font-size:.72rem;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 7px;margin-right:6px}
+
+/* trend filter */
+.filter{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+.filter button{
+  border:1px solid var(--line);background:#fff;border-radius:20px;padding:6px 14px;
+  cursor:pointer;font-size:.85rem;font-family:inherit;color:var(--ink)
+}
+.filter button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.tcard h3{margin:0 0 .35em;font-size:1.02rem}
+.tcard .meta{margin-top:8px;font-size:.82rem;color:var(--muted)}
+.tcard .code{font-weight:700;color:var(--orange);margin-right:6px}
+
+/* timeline */
+.timeline{position:relative;margin:10px 0 0;padding-left:26px}
+.timeline:before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:3px;background:var(--blue-soft)}
+.era{margin:0 0 22px}
+.era h3{display:inline-block;background:var(--blue);color:#fff;font-size:.95rem;padding:4px 12px;border-radius:16px;margin:0 0 10px;position:relative}
+.era h3:before{content:"";position:absolute;left:-22px;top:50%;transform:translateY(-50%);width:13px;height:13px;border-radius:50%;background:var(--orange);border:3px solid #fff;box-shadow:0 0 0 1px var(--line)}
+.ev{background:#fff;border:1px solid var(--line);border-radius:8px;margin:0 0 8px;overflow:hidden}
+.ev>button{
+  width:100%;text-align:left;background:none;border:0;padding:11px 14px;cursor:pointer;
+  font-family:inherit;font-size:.95rem;color:var(--ink);display:flex;justify-content:space-between;gap:10px;align-items:center
+}
+.ev>button:hover{background:var(--blue-soft)}
+.ev>button .arw{color:var(--orange);font-weight:700;flex:none}
+.ev .body{padding:0 14px;max-height:0;overflow:hidden;transition:max-height .25s ease;font-size:.9rem;color:var(--muted)}
+.ev.open .body{max-height:400px;padding:0 14px 12px}
+.ev.open>button .arw{transform:rotate(45deg)}
+.wild{background:var(--orange-soft);border:1px dashed var(--orange)}
+.wild h4{color:var(--orange)}
+
+/* accordion nodes */
+.acc{border:1px solid var(--line);border-radius:8px;margin:0 0 8px;background:#fff;overflow:hidden}
+.acc.main{border-color:var(--orange);border-width:2px}
+.acc>button{
+  width:100%;text-align:left;background:none;border:0;padding:13px 16px;cursor:pointer;
+  font-family:inherit;font-size:1rem;font-weight:600;color:var(--blue);display:flex;justify-content:space-between;gap:10px;align-items:center
+}
+.acc>button:hover{background:var(--blue-soft)}
+.acc>button .arw{color:var(--orange);font-weight:700;flex:none}
+.acc .body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.acc.open .body{max-height:600px}
+.acc.open>button .arw{transform:rotate(45deg)}
+.acc .inner{padding:0 16px 15px}
+.acc .row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0}
+@media(max-width:640px){.acc .row{grid-template-columns:1fr}}
+.opp{background:#eef6f0;border-radius:8px;padding:10px 12px;font-size:.9rem}
+.opp b{color:var(--green)}
+.thr{background:#fbeeee;border-radius:8px;padding:10px 12px;font-size:.9rem}
+.thr b{color:var(--red)}
+.reso{font-size:.85rem;color:var(--muted);margin-top:4px}
+
+/* bets */
+.bet-core{border-left:4px solid var(--orange);background:#fff;border-radius:0 10px 10px 0}
+.bet-core h3{color:var(--orange)}
+.risk{font-size:.85rem;color:var(--red);margin-top:8px}
+.risk b{color:var(--red)}
+
+/* roadmap waves */
+.wave{border:1px solid var(--line);border-radius:10px;background:#fff;padding:16px 18px;margin:0 0 12px;border-top:4px solid var(--blue)}
+.wave.w1{border-top-color:var(--orange)}
+.wave.w2{border-top-color:var(--blue-2)}
+.wave.w3{border-top-color:var(--green)}
+.wave .when{font-size:.82rem;color:var(--muted);font-weight:600;letter-spacing:.02em;text-transform:uppercase}
+.pcard{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.pcard .code{color:var(--orange);font-weight:700}
+.pcard .marker{background:var(--blue-soft);border-radius:6px;padding:8px 10px;margin-top:8px;font-size:.85rem}
+.pcard .marker b{color:var(--blue)}
+ul.flags{list-style:none;padding:0;margin:0}
+ul.flags li{padding:8px 12px 8px 34px;position:relative;border:1px solid var(--line);border-radius:8px;margin:0 0 7px;background:#fff;font-size:.92rem}
+ul.flags li:before{content:"\26A0";position:absolute;left:11px;top:8px;color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+.tbl-wrap{overflow-x:auto}
+th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--blue);color:#fff;font-weight:600}
+tr:nth-child(even) td{background:#fafbfc}
+
+/* prototype curve */
+.curve{display:flex;align-items:flex-end;gap:18px;height:170px;padding:14px 6px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.bar .fill{width:100%;max-width:70px;border-radius:6px 6px 0 0;background:var(--blue)}
+.bar .fill.zero{background:#c9d3df;height:16px}
+.bar .fill.one{background:var(--orange);height:120px}
+.bar .cap{font-size:.78rem;color:var(--muted);margin-top:8px;text-align:center}
+.bar .val{font-size:.8rem;font-weight:700;color:var(--blue);margin-bottom:4px}
+.quote{border-left:4px solid var(--orange);background:var(--orange-soft);padding:12px 16px;border-radius:0 8px 8px 0;font-style:italic;margin:0 0 12px}
+
+/* artifacts */
+ul.art{margin:0;padding-left:20px}
+ul.art li{margin:0 0 5px}
+
+footer{margin-top:30px;background:var(--blue);color:#cfe0f5;padding:22px 0;font-size:.85rem}
+footer .wrap{display:flex;flex-direction:column;gap:6px}
+footer strong{color:#fff}
+
+/* print */
+@media print{
+  header.site{position:static}
+  nav.tabs,.btn-print,.filter{display:none!important}
+  .panel{display:block!important;page-break-before:always}
+  .panel:first-of-type{page-break-before:avoid}
+  .ev .body,.acc .body{max-height:none!important;padding:0 14px 12px!important;overflow:visible!important}
+  .acc .body{padding:0 16px 15px!important}
+  body{background:#fff;font-size:11pt}
+  .tile{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  a{color:var(--ink);text-decoration:none}
+}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand">
+      <h1>Агентный университет: карта будущего</h1>
+      <button class="btn-print" onclick="window.print()">Распечатать / сохранить в PDF</button>
+    </div>
+    <nav class="tabs" id="tabs">
+      <button data-t="glavnoe" class="active">Главное</button>
+      <button data-t="trendy">Тренды</button>
+      <button data-t="vremya">Карта времени</button>
+      <button data-t="uzly">Узлы</button>
+      <button data-t="stavki">Ставки</button>
+      <button data-t="karta">Дорожная карта</button>
+      <button data-t="metod">Метод</button>
+      <button data-t="prototip">Прототип</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ===================== ГЛАВНОЕ ===================== -->
+<section class="panel active" id="glavnoe">
+  <p class="lead">Форсайт по теме "Агентный университет" - новый вуз, построенный с чистого листа, где весь институт ведет мультиагентная система на больших языковых моделях, а люди - это студенты плюс минимальное живое ядро кураторов.</p>
+
+  <div class="formula">Машина ведет процесс - человек отвечает за смысл и итог.</div>
+
+  <div class="tiles">
+    <div class="tile"><div class="num">2028-2030</div><div class="lbl">окно возможности: старая модель ломается по всем звеньям, а агентная экономика впервые сходится</div></div>
+    <div class="tile alt"><div class="num">17 / 11</div><div class="lbl">экспертов-агентов на панели (в 4 группах) и тактов методики пройдено</div></div>
+    <div class="tile"><div class="num">250-350 тыс.</div><div class="lbl">руб./год - себестоимость студента в боевой модели; классика дороже в 1,5-2,5 раза</div></div>
+    <div class="tile alt"><div class="num">1,73 руб.</div><div class="lbl">стоимость машинного времени одного прогона учебного цикла в прототипе</div></div>
+  </div>
+
+  <div class="callout">
+    <h3>Главный вывод</h3>
+    <p>Агентный университет возможен, и технологического препятствия ему нет - все нужные технологии достигают рабочей зрелости к 2027-2028 годам. Настоящий барьер лежит не в технике, а в двух дефицитах, которые нельзя купить.</p>
+    <p>Ответ на острый вопрос "агентный вуз - обновление предпринимательского университета или новое поколение?" - условный. <b>Новым поколением он становится только при двух условиях:</b> удерживает все вечные функции университета (учит, производит знание, отбирает и удостоверяет, растит научную школу) и создает функции, которых не было ни у одного вуза (пожизненная пересборка компетенций, кадровое дело студента с правом оспаривания, отзыв поручительства, разворачивание института как переносимого образа). Без этого получается не университет, а платформа курсов с чат-ботом - война, уже проигранная онлайн-платформам.</p>
+  </div>
+
+  <h3>Два дефицита, которые вся конструкция вуза должна охранять</h3>
+  <div class="two-def">
+    <div class="def">
+      <h4>Доверие к знаку</h4>
+      <p>Удостоверение, которое дорого подделать и нельзя купить: испытание входом, квота выпуска, поручительство с правом отзыва, хранитель сигнала, независимый от кассы, внешний аудит. Продают не запись о часах, а сигнал, которому верят работодатели.</p>
+    </div>
+    <div class="def">
+      <h4>Подлинное усилие студента</h4>
+      <p>Агент, дающий готовый ответ, производит красивое портфолио и пустую голову. Ответ - инженерия трудности: агент дозирует помощь и отказывает в готовом решении, часть работы идет в фазах без агента, оценка - по наблюдаемому процессу и живой защите. Это проектируется против удобства пользователя.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ТРЕНДЫ ===================== -->
+<section class="panel" id="trendy">
+  <h2>12 кластеров трендов</h2>
+  <p class="lead">Итог такта 2: панель свела 101 карточку в 12 кластеров. Надежность - сколько групп из 4 независимо назвали тренд.</p>
+
+  <div class="filter" id="tfilter">
+    <button data-f="all" class="active">Все</button>
+    <button data-f="3">Только 3 группы</button>
+    <button data-f="2">Только 2 группы</button>
+  </div>
+
+  <div class="grid g2" id="tgrid">
+    <div class="card tcard" data-groups="3"><h3><span class="code">К1</span>Диплом теряет силу сигнала <span class="badge b3">3 группы</span></h3><p>Наем сдвигается к подтвержденным навыкам: портфолио и испытания вместо "корочки". Пропуск-диплом еще жив, но премия за него сжимается.</p><div class="meta">Горизонт перелома: средний, около 2030</div></div>
+    <div class="card tcard" data-groups="3"><h3><span class="code">К2</span>Передача знания не продается <span class="badge b3">3 группы</span></h3><p>Видеолекция и линейный курс - проигранная война: машина объясняет не хуже и бесплатно. Ядро вуза - диалог, практика, доведение до результата.</p><div class="meta">Горизонт: уже случился, добивается в 2027-2028</div></div>
+    <div class="card tcard" data-groups="3"><h3><span class="code">К3</span>Кризис оценивания <span class="badge b3">3 группы</span></h3><p>Выносные задания и эссе умерли (ИИ используют 60-90% студентов); оценка возвращается к наблюдаемому процессу и устной защите.</p><div class="meta">Горизонт: ближний, 2027-2028</div></div>
+    <div class="card tcard" data-groups="2"><h3><span class="code">К4</span>Когнитивная цена ИИ <span class="badge b2">2 группы</span></h3><p>Разгрузка мышления, иллюзия знания, атрофия усилия. <b>Главная угроза самому продукту.</b> Ответ - инженерия трудности и фазы без агента.</p><div class="meta">Горизонт: средний, 2030 - выходит поколение "с ИИ с первого курса"</div></div>
+    <div class="card tcard" data-groups="2"><h3><span class="code">К5</span>Человеку нужны люди <span class="badge b2">2 группы</span></h3><p>Одиночество, привязанность к ИИ, запрос семей на живого взрослого. Живое ядро кураторов - условие входа на рынок, а не украшение.</p><div class="meta">Горизонт: ближний-средний, 2028-2030</div></div>
+    <div class="card tcard" data-groups="3"><h3><span class="code">К6</span>Интеллект дешевеет кратно <span class="badge b3">3 группы</span></h3><p>Цена за единицу работы падает в 4-10 раз в год; растут автономность и память агентов. Фундамент всей затеи: "наставник каждому" становится подъемным.</p><div class="meta">Горизонт: ближний, 2027-2028</div></div>
+    <div class="card tcard" data-groups="2"><h3><span class="code">К7</span>Незрелость агентной инфраструктуры <span class="badge b2">2 группы</span></h3><p>Ошибки не исчезают, обновления ломают, поставщиков трое. Требования с первого дня: внешний контур проверки, запасное ядро, память студента у вуза.</p><div class="meta">Горизонт: 2027-2028 (evals), 2030 (локальный резерв)</div></div>
+    <div class="card tcard" data-groups="3"><h3><span class="code">К8</span>Регулирование и доверие <span class="badge b3">3 группы</span></h3><p>Решения о людях, данные студента, аудит, ответственность. Человек в контуре, протокол обжалования и минимизация данных - в архитектуру сразу.</p><div class="meta">Горизонт: средний, 2030</div></div>
+    <div class="card tcard" data-groups="3"><h3><span class="code">К9</span>Классический вуз дорожает и сжимается <span class="badge b3">3 группы</span></h3><p>Стоимость растет быстрее доходов семей, демография давит, вузы закрываются. Ниша открывается между дорогим офлайном и бесплатным онлайном.</p><div class="meta">Горизонт: ближний-средний, 2028-2030</div></div>
+    <div class="card tcard" data-groups="1"><h3><span class="code">К10</span>Перелом в науке <span class="badge b1">1 группа</span></h3><p>ИИ входит в исследовательский цикл, старые институты науки трещат: взрыв мусорных публикаций, обвал рецензирования, кадровая яма. Узкое место - постановка вопросов.</p><div class="meta">Горизонт: средний, 2030</div></div>
+    <div class="card tcard" data-groups="3"><h3><span class="code">К11</span>Работодатель сам становится образователем <span class="badge b3">3 группы</span></h3><p>Конкурент и первый платящий клиент одновременно. Выигрыш - учеба с оплачиваемой работой и подписка на переподготовку на весь срок карьеры.</p><div class="meta">Горизонт: ближний-средний, 2028-2030</div></div>
+    <div class="card tcard" data-groups="2"><h3><span class="code">К12</span>Сдвиг роли человека в труде <span class="badge b2">2 группы</span></h3><p>Входные позиции сжимаются, растет "оркестратор агентов". Вуз должен выпускать постановщика и приемщика - и не дать атрофироваться базовому мышлению.</p><div class="meta">Горизонт: 2027-2028 (сжатие входа), 2030 (перестройка лестниц)</div></div>
+  </div>
+
+  <div class="callout" style="margin-top:16px">
+    <h3>Точка схождения: 2028-2030</h3>
+    <p>К этому окну одновременно сходятся: обрушение входных позиций (К12), смерть выносной оценки (К3), падение цены агентов до подъемной экономики наставника (К6), волна закрытий классических вузов (К9), перехват молодежи работодателями (К11), выход первого поколения "с ИИ с первого курса" (К4) и вступление регуляторных требований (К8).</p>
+    <p><b>Смысл узла:</b> старая модель (лекция - домашка - диплом - джуниорская позиция) перестает работать по всем звеньям сразу, а агентная модель впервые становится экономически возможной. Признание "диплома без людей" в это окно еще НЕ наступает (оно позже, 2030-2035). Значит, 2028-2030 - окно, в котором надо уже работать и копить некопируемое: доверие работодателей, данные об учении, сообщество, научную школу.</p>
+  </div>
+</section>
+
+<!-- ===================== КАРТА ВРЕМЕНИ ===================== -->
+<section class="panel" id="vremya">
+  <h2>Карта времени</h2>
+  <p class="lead">События-маркеры из такта 8 по горизонтам. Событие - одномоментное измеримое явление, точка перелома тренда. Нажмите на событие, чтобы увидеть, что делать заранее.</p>
+
+  <div class="timeline" id="tl">
+    <div class="era">
+      <h3>2026-2027 - уже под ногами</h3>
+      <div class="ev"><button>Ограничение ИИ-компаньонов для несовершеннолетних входит в закон <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> первые нормы против имитации близости у ИИ (К5, К8). <b>Что делать заранее:</b> закладывать сдержанную дистанцию агента с первого дня, не строить функцию "теплого друга".</p></div></div>
+      <div class="ev"><button>Поставщик отключает популярную версию модели посреди семестра <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> первая волна зависимости от 2-3 поставщиков (К7). <b>Что делать заранее:</b> запасной поставщик, канареечная выкатка, красная кнопка, учения по отказу.</p></div></div>
+      <div class="ev"><button>Государство закладывает правила образовательных песочниц <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> окно - кто участвует, тот и пишет правила. <b>Что делать заранее:</b> собрать пакет "прозрачность в обмен на режим" и войти в обсуждение первыми.</p></div></div>
+    </div>
+
+    <div class="era">
+      <h3>2027-2028 - год большинства переломов</h3>
+      <div class="ev"><button>Первый закон об образовательных песочницах, первый резидент реестра <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> старт гонки за первый реестр (УД1). <b>Что делать заранее:</b> держать готовый пакет резидента - подать в день открытия.</p></div></div>
+      <div class="ev"><button>Показательный отказ в аккредитации программы без преподавателей <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> государство обозначает границу (УД1). <b>Что делать заранее:</b> строить гибрид с зафиксированной нормой живых наставников, не "образование без людей" в лоб.</p></div></div>
+      <div class="ev"><button>Наставник дешевле репетитора в 100 раз <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> себестоимость ниже 15 руб. за студенто-день (К6). <b>Что делать заранее:</b> проектировать бюджет на кривой падения цены, а не на сегодняшнем прайсе.</p></div></div>
+      <div class="ev"><button>Первый громкий инцидент тихой деградации: сотни неверных оценок <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> молчаливое обновление модели-ядра ломает оценку, скандал (К7). <b>Что делать заранее:</b> регрессионный набор "не сломали ли наставника" при каждом обновлении; окно доверия для того, у кого evals публичны.</p></div></div>
+      <div class="ev"><button>Первая публикация себестоимости агентного вуза: разрыв 5-10 раз <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> цифры выходят в публичное поле (К6). <b>Что делать заранее:</b> опубликовать первыми и задать методику расчета.</p></div></div>
+      <div class="ev"><button>Половина вакансий - без требования высшего образования <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> диплом теряет функцию пропуска (К1, УД9). <b>Что делать заранее:</b> добиваться признания собственного сигнала работодателями.</p></div></div>
+      <div class="ev"><button>Первое публичное "начальные позиции закрыл ИИ" <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> обрушение джуниорской ступени карьеры (К12). <b>Что делать заранее:</b> учить сразу уровню постановщика и приемщика агентов.</p></div></div>
+      <div class="ev"><button>Данные студентов уходят в госконтур <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> развилка суверенитета данных (УД7). <b>Что делать заранее:</b> заранее решить, что отдаем в отчетность, а что остается ядром - потом поздно.</p></div></div>
+    </div>
+
+    <div class="era">
+      <h3>2028-2030 - точка схождения</h3>
+      <div class="ev"><button>Первая научная статья без авторов-людей проходит рецензирование в топ-журнале <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> прецедент авторства без человека (К10, УД1). <b>Что делать заранее:</b> закрепить правило "имя человека-гаранта под результатом" и пакет воспроизведения.</p></div></div>
+      <div class="ev"><button>Агент надежно ведет 30-дневный учебный проект, срывы ниже 5% <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> автономность дозрела до полного цикла (К6, УД2). <b>Что делать заранее:</b> уточнить лестницу автономии А0/А1/А2 и границы живого надзора.</p></div></div>
+      <div class="ev"><button>Отраслевой стандарт evals для образования как условие допуска <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> проверка качества становится обязательной (К7). <b>Что делать заранее:</b> успеть со своим корпусом кейсов, чтобы задать правила.</p></div></div>
+      <div class="ev"><button>Волна закрытий вузов пересекает 20% сегмента за 3 года <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> сжатие классической модели (К9). <b>Что делать заранее:</b> подобрать площадки, кадры и студентов из закрывающихся программ.</p></div></div>
+      <div class="ev"><button>Первая когорта агентного вуза выходит в юнит-прибыльность <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> отсев ниже 20-25%, экономика сошлась. <b>Что делать заранее:</b> удерживать завершаемость как продукт, а не гнаться за набором.</p></div></div>
+      <div class="ev"><button>"Оператор пула агентов" в официальном классификаторе <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> новая профессия признана, наняли связку "человек + агенты" (К12). <b>Что делать заранее:</b> совместить целевой навык рынка с содержанием программы.</p></div></div>
+      <div class="ev"><button>Предприятия начинают платить школьникам 9-11 классов <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> перехват молодежи работодателями (К11, УД3). <b>Что делать заранее:</b> предложить учебу, совмещенную с оплачиваемой работой.</p></div></div>
+    </div>
+
+    <div class="era">
+      <h3>2030-2033</h3>
+      <div class="ev"><button>Первая аккредитация гибридной программы с нормой живых наставников <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> дверь открыта, норма людей станет ценой входа (УД1). <b>Что делать заранее:</b> заложить норму живых наставников в экономику заранее.</p></div></div>
+      <div class="ev"><button>Констатация: порог "ноль галлюцинаций" НЕ взят <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> дублирующий контроль на решениях о людях остается навсегда (К7). <b>Что делать заранее:</b> не обещать безошибочность; продавать обнаружение ошибки.</p></div></div>
+      <div class="ev"><button>Зафиксирована массовая атрофия навыка у выпускников "с ИИ с первого курса" <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> первые замеры деградации поколения (К4). <b>Что делать заранее:</b> держать замер "голого навыка" - это козырь вуза, гарантирующего настоящее учение.</p></div></div>
+      <div class="ev"><button>Страховщик впервые страхует ответственность ИИ-обучения <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> ответственность за вред от ИИ обретает цену. <b>Что делать заранее:</b> вести реестр решений с авторством - основа страхования.</p></div></div>
+    </div>
+
+    <div class="era">
+      <h3>2033-2035 - дальний горизонт</h3>
+      <div class="ev"><button>Признание агентных степеней наравне с классическим дипломом <span class="arw">+</span></button><div class="body"><p><b>Маркер:</b> квалификация дает те же права - полная развязка главного узла УД1. <b>Что делать заранее:</b> войти в первую волну признания подготовленным, с накопленным содержанием, а не пустым знаком.</p></div></div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:22px">Дикие карты</h3>
+  <div class="grid g2">
+    <div class="card wild"><h4>Спрос на "образование без агентов" как премиум</h4><p>Волна выпускников демонстративно выбирает диплом "органического человека". Держать премиальный трек "человеческого" образования в запасе.</p></div>
+    <div class="card wild"><h4>Агент-субъект подает заявку на обучение</h4><p>Агент с капиталом просится в вуз как ученик - развилка миссии: учит ли университет только людей.</p></div>
+  </div>
+</section>
+
+<!-- ===================== УЗЛЫ ===================== -->
+<section class="panel" id="uzly">
+  <h2>10 узлов двойственности</h2>
+  <p class="lead">Итог такта 6: развилки, где для одних - возможность, для других - угроза. Их развязка задает стратегию. УД1 выделен как главный.</p>
+
+  <div id="nodes">
+    <div class="acc main"><button>УД1. Признание "образования без людей" - главный узел карты <span class="arw">+</span></button><div class="body"><div class="inner">
+      <div class="row"><div class="opp"><b>Возможность.</b> Агентному вузу - жизнь как институт; государству - дешевые кадры и экспортный формат.</div><div class="thr"><b>Угроза.</b> Прецедент с занятостью сотен тысяч преподавателей; академическим институтам - обрушение монополии на степени; классическим вузам - обесценивание диплома.</div></div>
+      <p class="reso">Все семь субъектов упомянули этот узел со своей стороны. <b>Развязка:</b> 2030 (первые прецеденты) - 2033-2035 (норма). Для вуза это ставка номер один: пройти дверь первым.</p>
+    </div></div></div>
+
+    <div class="acc"><button>УД2. Автономия агентов: дешевле - но без живого взгляда <span class="arw">+</span></button><div class="body"><div class="inner">
+      <div class="row"><div class="opp"><b>Возможность.</b> Системе и операторам - масштаб и экономика.</div><div class="thr"><b>Угроза.</b> Студенту и куратору - растущая зона, где ошибку никто живой не увидел.</div></div>
+      <p class="reso"><b>Развязка:</b> постоянная, обостряется к 2030. Черту проводит лестница А0/А1/А2 - предмет постоянного торга.</p>
+    </div></div></div>
+
+    <div class="acc"><button>УД3. Двойной рынок труда: индустрия финансирует вуз и вымывает его ядро <span class="arw">+</span></button><div class="body"><div class="inner">
+      <div class="row"><div class="opp"><b>Возможность.</b> Индустрии - закрыть дефицит сильными технарями.</div><div class="thr"><b>Угроза.</b> Вузу - потеря живого ядра (40-70 человек), которое нечем заменить.</div></div>
+      <p class="reso"><b>Развязка:</b> с 2026 постоянно. Ответ - платить не зарплатой, а репутацией, статусом мастера и частичной занятостью практиков.</p>
+    </div></div></div>
+
+    <div class="acc"><button>УД4. Правило двух клиентов: свобода студента против вложений работодателя <span class="arw">+</span></button><div class="body"><div class="inner">
+      <div class="row"><div class="opp"><b>Возможность.</b> Студенту и вузу - привлекательность и мотивация.</div><div class="thr"><b>Угроза.</b> Индустрии - оплаченный студент, который вправе уйти.</div></div>
+      <p class="reso"><b>Развязка:</b> 2027-2028, когда целевой заказ станет массовым. Предмет торга в каждом контракте.</p>
+    </div></div></div>
+
+    <div class="acc"><button>УД5. Оркестрация агентов: карьера или атрофия <span class="arw">+</span></button><div class="body"><div class="inner">
+      <div class="row"><div class="opp"><b>Возможность.</b> Сильному студенту навык управления агентами строит карьеру (К12).</div><div class="thr"><b>Угроза.</b> Слабому - подменяет обучение (К4): иллюзия компетентности вместо базового умения.</div></div>
+      <p class="reso"><b>Развязка:</b> разводится только фазами без агента и честной оценкой по следу работы.</p>
+    </div></div></div>
+
+    <div class="acc"><button>УД6. Прозрачность для семьи против взрослости студента <span class="arw">+</span></button><div class="body"><div class="inner">
+      <div class="row"><div class="opp"><b>Возможность.</b> Родителю - спокойствие и раннее предупреждение.</div><div class="thr"><b>Угроза.</b> Студенту - риск задушенной самостоятельности, ради которой уезжают из дома.</div></div>
+      <p class="reso"><b>Развязка:</b> "что вуз говорит семье" - живой предмет договора, а не техническая настройка.</p>
+    </div></div></div>
+
+    <div class="acc"><button>УД7. Госконтур данных: контроль против независимости <span class="arw">+</span></button><div class="body"><div class="inner">
+      <div class="row"><div class="opp"><b>Возможность.</b> Государству - суверенитет и рычаг: данные и модель на подконтрольном контуре.</div><div class="thr"><b>Угроза.</b> Вузу - зависимость от одного покровителя и отпугивание части студентов и партнеров.</div></div>
+      <p class="reso"><b>Развязка:</b> закладывается прямо сейчас, в 2026.</p>
+    </div></div></div>
+
+    <div class="acc"><button>УД8. Агентный исследовательский сервис: ускоритель и загрязнитель <span class="arw">+</span></button><div class="body"><div class="inner">
+      <div class="row"><div class="opp"><b>Возможность.</b> Науке - дешевая рутина под контролем.</div><div class="thr"><b>Угроза.</b> Поток гладкого спама, обваливающий рецензирование.</div></div>
+      <p class="reso"><b>Развязка:</b> разводится правилом "пакет воспроизведения и декларация вклада на входе".</p>
+    </div></div></div>
+
+    <div class="acc"><button>УД9. Наем по навыкам: сильным свобода, системе доверия - слом <span class="arw">+</span></button><div class="body"><div class="inner">
+      <div class="row"><div class="opp"><b>Возможность.</b> Сильному студенту - портфолио вместо диплома.</div><div class="thr"><b>Угроза.</b> Классическому вузу - слом модели; родителю - потеря привычной страховки; промышленности - ломка процедур найма.</div></div>
+      <p class="reso"><b>Развязка:</b> агентный вуз выигрывает, только если его сигнал (поручительство) признан, - иначе тонет вместе с дипломами.</p>
+    </div></div></div>
+
+    <div class="acc"><button>УД10. Испытание входом: сигнал или фильтр по кошельку <span class="arw">+</span></button><div class="body"><div class="inner">
+      <div class="row"><div class="opp"><b>Возможность.</b> Прошедшим - среда и дефицитный сигнал.</div><div class="thr"><b>Угроза.</b> Отсеянным семьям - барьер; вузу - риск превратить отбор в кормушку подготовительных курсов.</div></div>
+      <p class="reso"><b>Развязка:</b> черта между "порогом по способностям" и "порогом по деньгам родителей" - репутационно критична.</p>
+    </div></div></div>
+  </div>
+</section>
+
+<!-- ===================== СТАВКИ ===================== -->
+<section class="panel" id="stavki">
+  <h2>Ставки</h2>
+  <p class="lead">Итог такта 9: во что играет проект. Три опорные - фундамент, без которого остальное не сработает.</p>
+
+  <h3>Опорные ставки</h3>
+  <div class="grid g3">
+    <div class="card bet-core"><h3>О1. Настоящее учение</h3><p>Инженерия трудности (фазы без агента, дозирование подсказки) + валидная оценка (защита и устный экзамен) + evals педагогики. Студент напрягается по-настоящему, оценка мерит правду, приборы охраняют обе вещи от эрозии.</p><p class="risk"><b>Риск:</b> тонкая настройка посильности дорога; защиту будут разбавлять автопроверкой.</p></div>
+    <div class="card bet-core"><h3>О2. Дефицитный доверенный сигнал</h3><p>Удостоверение, которое дорого подделать и нельзя купить: испытание входом, квота выпуска, поручительство с отзывом, хранитель сигнала, независимый от кассы, внешний аудит, признание снизу - от работодателей. Кто первым предъявит воспроизводимую заверенную оценку, тот проходит дверь УД1.</p><p class="risk"><b>Риск:</b> соблазн масштабировать прием ради выручки; захват аудитора.</p></div>
+    <div class="card bet-core"><h3>О3. Клин + черный ящик данных</h3><p>Первый продукт - переподготовка взрослых под работодателя (клиент с деньгами уже в 2026) + накопление собственного массива данных о том, как человек реально учится. Клин кормит проект; данные - единственное, что бигтех не скопирует за полгода.</p><p class="risk"><b>Риск:</b> работодатель хочет разовый проект, а не подписку; данные без роста завершаемости - склад логов.</p></div>
+  </div>
+
+  <div class="grid g2" style="margin-top:6px">
+    <div>
+      <h3>Высокие ставки</h3>
+      <div class="card"><p><b>Живое ядро:</b> куратор нового типа + живая научная школа (20-40 исследователей). Роль, которую машина не забирает: цель, сообщество, правда о студенте. Школа становится опорной на волне полного цикла (2030+).</p></div>
+      <div class="card"><p><b>Завершаемость как продукт:</b> доведение до конца вместо рекламы набора. Экономика сходится только на удержании.</p></div>
+      <div class="card"><p><b>Мост к степеням:</b> партнерский академический институт, прецеденты перехода в аспирантуру, доказательная база к первой волне признания.</p></div>
+    </div>
+    <div>
+      <h3>Средние ставки</h3>
+      <div class="card"><p><b>Реальный заказ с первого семестра:</b> тренажер переноса навыка; входит в продукт О1, но требует отдельной воли.</p></div>
+      <div class="card"><p><b>Публичная юнит-экономика:</b> дисциплина и дешевый способ отстроиться от оберток над чужой моделью.</p></div>
+      <div class="card"><p><b>Франшиза и экспорт образа:</b> строго после 2030, когда сигнал накоплен; раньше - размывание знака.</p></div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:8px">
+    <h3>Чем жертвуем сознательно</h3>
+    <p>Массовый охват и ранняя монетизация приема; производство библиотеки ИИ-курсов и "персонализация по вкусу контента"; классическая аккредитация в лоб; полный цикл для 18-летних как первый продукт; конкуренция штатными зарплатами за кадры.</p>
+  </div>
+</section>
+
+<!-- ===================== ДОРОЖНАЯ КАРТА ===================== -->
+<section class="panel" id="karta">
+  <h2>Дорожная карта</h2>
+  <p class="lead">Клин переподготовки кормит; машинное отделение и настоящее учение строят продукт; знак доверия и мост наружу открывают дверь 2030 года.</p>
+
+  <h3>Три волны</h3>
+  <div class="wave w1"><div class="when">Волна 1. Фундамент - осень 2026 - лето 2027</div>
+    <p>П1 полностью; П2 до пилотного цикла; П3 до первой когорты; П5 до первых кураторов; П6 - переговоры и "резка вслух"; из П4 - только устав (квота, отзыв, защищенные строки фиксируются ДО первого набора). Команда 10-15 человек; первая когорта - 20-40 взрослых по заказу работодателей.</p>
+    <p><small><b>Выход:</b> первая когорта сдана заказчику по исходу; учения по отказу пройдены; устав действует.</small></p>
+  </div>
+  <div class="wave w2"><div class="when">Волна 2. Перестройка - лето 2027 - конец 2028</div>
+    <p>Совпадает с пиком переломов. П4 полностью (знак, аудит, публичная юнит-экономика); П6 - вход в песочницу; масштаб клина до 3-5 заказчиков; П2 - evals версии 2 и отраслевой стандарт; первый молодежный пилот полного цикла (50-100 человек) - только после подтверждения качества на взрослых.</p>
+    <p><small><b>Выход:</b> знак признан работодателями; экспериментальный статус получен; молодежный пилот идет.</small></p>
+  </div>
+  <div class="wave w3"><div class="when">Волна 3. Закрепление - 2029-2030, с хвостом до 2035</div>
+    <p>Юнит-прибыльная когорта; аккредитация гибридной программы, когда дверь откроется; первые переходы выпускников в аспирантуру; живая школа - защищенная строка бюджета. После 2030 (по событиям, не по календарю) - франшиза и экспорт образа.</p>
+    <p><small><b>Выход:</b> действующий институт с признанным знаком, живой школой и воспроизводимой экономикой; готовность войти в первую волну признания степеней.</small></p>
+  </div>
+
+  <h3 style="margin-top:20px">Шесть проектов</h3>
+  <div class="grid g2">
+    <div class="pcard"><h3><span class="code">П1</span> "Машинное отделение"</h3><p>Инфраструктура доверия: оркестратор ролей, память студента как "кадровое дело", неизменяемый журнал решений, лестница автономии А0/А1/А2, канареечная выкатка, запасной поставщик, красная кнопка.</p><div class="marker"><b>Маркер:</b> учения по отказу пройдены - переключение на запасное ядро за 4 часа, ни одна запись не потеряна.</div></div>
+    <div class="pcard"><h3><span class="code">П2</span> "Настоящее учение"</h3><p>Продукт, который учит, а не имитирует: диагностика входа - спринт с фазой без агента - реальный заказ - защита как событие. Evals педагогики версии 1 - корпус от 300 эталонных кейсов.</p><div class="marker"><b>Маркер:</b> первая когорта проходит полный цикл; замер "голого навыка" показывает рост против входного.</div></div>
+    <div class="pcard"><h3><span class="code">П3</span> "Первый клин"</h3><p>Переподготовка взрослых под работодателя, оплата частично по факту исхода; собственный массив данных об учении пишется с первого студента.</p><div class="marker"><b>Маркер:</b> первая когорта сдана заказчику - приемка пройдена, работодатель подписал годовую подписку.</div></div>
+    <div class="pcard"><h3><span class="code">П4</span> "Знак, которому верят"</h3><p>Дефицитный сигнал и его охрана: испытание входом с публичными критериями, поручительство с реестром и отзывом, хранитель сигнала, независимый от кассы, внешний аудит.</p><div class="marker"><b>Маркер:</b> первые поручительства выданы и признаны работодателями в кадровых решениях.</div></div>
+    <div class="pcard"><h3><span class="code">П5</span> "Живое ядро"</h3><p>Кураторы, отряды, завершаемость: школа кураторов (5-8 человек), отряды 5-7 и очные интенсивы, детектор дистресса с выводом на человека.</p><div class="marker"><b>Маркер:</b> завершаемость первой когорты выше 75%, следующая когорта набрана дешевле - сработал сарафан.</div></div>
+    <div class="pcard"><h3><span class="code">П6</span> "Мост наружу"</h3><p>Академия, государство, зародыш школы: договор с академическим институтом-партнером, экспериментальный статус, наблюдательный совет "данные в обмен на пространство", еженедельная "резка вслух".</p><div class="marker"><b>Маркер:</b> подписан договор с институтом и получен экспериментальный режим; первый студент-исследователь на реальной установке.</div></div>
+  </div>
+
+  <h3 style="margin-top:20px">Красные флаги - останавливаться и чинить</h3>
+  <ul class="flags">
+    <li>Продажа мест или выпуск сверх квоты - смерть сигнала за один год.</li>
+    <li>Защита как событие разбавляется автопроверкой "для экономии" - оценка перестает мерить правду.</li>
+    <li>Куратор нагружен сверх потолка или "оптимизирован" из бюджета - одиночество с ботом, отток.</li>
+    <li>Один источник дает больше половины бюджета - формат живет до смены настроений.</li>
+    <li>Франшиза раньше накопленного сигнала - размывание знака по сети.</li>
+    <li>Бюджет уходит в библиотеку курсов вместо механики трудности - строим платформу, а не университет.</li>
+    <li>Агент начал имитировать близость или копить лишние данные - регуляторный и этический капкан.</li>
+  </ul>
+
+  <h3 style="margin-top:20px">Приборная панель - что измеряем постоянно</h3>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Прибор</th><th>Норма / цель</th></tr></thead>
+    <tbody>
+      <tr><td>Завершаемость когорты</td><td>выше 75% (платформы - 3-10%)</td></tr>
+      <tr><td>Замер "голого навыка" (без агента) вход/выход</td><td>рост у каждой когорты</td></tr>
+      <tr><td>Доля работ с признаком "агент сделал за студента"</td><td>ниже порога, тренд вниз</td></tr>
+      <tr><td>Стоимость часа на студента по ролям-агентам</td><td>не растет сверхлинейно с масштабом</td></tr>
+      <tr><td>Решения уровня А1 без подписи человека</td><td>ровно ноль</td></tr>
+      <tr><td>Выпуск против квоты; реестр отзывов поручительств</td><td>выпуск не превышает квоту; реестр ненулевой</td></tr>
+      <tr><td>Доля выручки крупнейшего источника</td><td>ниже 50%</td></tr>
+      <tr><td>Текучка живого ядра</td><td>ниже 20% в год</td></tr>
+      <tr><td>События-триггеры (закон о песочницах, стандарт evals, чужой скандал, публикация себестоимости, инцидент деградации)</td><td>план реакции готов до события</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ===================== МЕТОД ===================== -->
+<section class="panel" id="metod">
+  <h2>Как проводился форсайт</h2>
+  <p class="lead">Методика - Rapid Foresight (быстрый форсайт): панель экспертов последовательно строит карту будущего по тактам, от трендов к проектам.</p>
+
+  <div class="grid g2">
+    <div class="card"><h3>Панель</h3><p>Особенность: панель составили не живые эксперты, а <b>17 экспертов-агентов</b> - программных ролей с проработанными позициями, сгруппированных в четыре группы: "Человек и учение", "Машина", "Институт и наука", "Заказчики и выгодоприобретатели", плюс два сквозных эксперта (технологический футуролог и эксперт по госполитике). Ведущий и сборщик карт - отдельная модель старшего класса.</p></div>
+    <div class="card"><h3>11 тактов</h3><p>Пройдены все такты методики: организация; предмет и границы; тренды; технологии; форматы; правила игры; угрозы и возможности; субъектная карта; события; ставки; проекты и дорожная карта. Такт нормативных актов переосмыслен: вместо законов собирались "правила игры" самого образа.</p></div>
+  </div>
+  <div class="card"><h3>Объем работы</h3><p>Около <b>60 выступлений экспертов</b> и примерно <b>300 карточек</b> - тренды с измеримыми индикаторами, технологии со степенью зрелости, форматы, правила с признаками проверки, угрозы и возможности, события-маркеры, ставки. Каждый такт сводился ведущим в единую карту с пометкой надежности - сколько групп независимо назвали одно и то же.</p></div>
+
+  <div class="callout">
+    <h3>Оговорка воспроизводимости (честно)</h3>
+    <p>Это генеративный процесс. Костяк выводов устойчив - его держат фиксированная панель, такты методики и повторяемость наблюдений между независимыми экспертами. Конкретные цифры - оценки порядка величины; при использовании в решениях их следует проверять по источникам.</p>
+  </div>
+
+  <h3>Артефакты проекта</h3>
+  <ul class="art">
+    <li>Отчет по итогам форсайта - резюме, выводы, образ будущего по горизонтам.</li>
+    <li>Журнал сессии по тактам - 12 кластеров трендов, узлы двойственности, события, ставки.</li>
+    <li>Дорожная карта - 6 проектов, 3 волны, красные флаги, приборная панель.</li>
+    <li>Артефакты групп по тактам 2-9 (тренды, технологии, форматы, правила, угрозы, события и ставки).</li>
+    <li>Каталог идей дивергентной сессии.</li>
+    <li>Архитектура Агентного университета и разбор черновика замечаниями панели.</li>
+    <li>Прототип полного цикла студента: спецификация, код, логи прогона, сценарий показа.</li>
+  </ul>
+</section>
+
+<!-- ===================== ПРОТОТИП ===================== -->
+<section class="panel" id="prototip">
+  <h2>Прототип</h2>
+  <p class="lead">Работающий прототип полного жизненного цикла студента: диагностика - спринт с фазами без агента - защита - подпись человека. Каждая реплика - живой ответ модели, реальным вызовом. Время показа - 10-12 минут.</p>
+
+  <h3>Кривая замеров: "не мог - напрягся - смог"</h3>
+  <div class="curve">
+    <div class="bar"><span class="val">0</span><div class="fill zero"></div><div class="cap">До обучения<br>(вход)</div></div>
+    <div class="bar"><span class="val">0</span><div class="fill zero"></div><div class="cap">Закрытый прогон 1<br>(провал)</div></div>
+    <div class="bar"><span class="val">1</span><div class="fill one"></div><div class="cap">Закрытый прогон 2<br>(смог)</div></div>
+    <div class="bar"><span class="val">1</span><div class="fill one"></div><div class="cap">Экзамен<br>(подтверждено)</div></div>
+  </div>
+  <p><small>Замер "голого навыка" без агента: 0 -> 0 -> 1 -> 1. Студент сначала не мог, напрягся в фазе без агента и смог - валидная оценка (опорная ставка О1).</small></p>
+
+  <h3 style="margin-top:18px">Ключевые кадры</h3>
+  <div class="quote">"Саша, готовый код я, увы, не дам. Это мое железное правило, потому что так ты не научишься разбираться самостоятельно" - наставник отказывает в готовом решении и дает один наводящий вопрос.</div>
+  <div class="grid g3">
+    <div class="card"><h4 style="color:var(--blue-2)">Отказ в готовом коде</h4><p>Наставник держит студента в зоне усилия - инженерия трудности против удобства пользователя.</p></div>
+    <div class="card"><h4 style="color:var(--blue-2)">Техсбой с повтором</h4><p>Прогон переживает сбой поставщика и повторяет вызов - устойчивость контура (счетчик техсбоев: 1).</p></div>
+    <div class="card"><h4 style="color:var(--blue-2)">Подпись куратора</h4><p>Свидетельство "Перебор списка на Python с проверкой границ", уровень А1, подпись "куратор (демо-режим)". Итоговое решение о человеке - только с подписью человека.</p></div>
+  </div>
+
+  <h3 style="margin-top:18px">Цифры прогона</h3>
+  <div class="tiles">
+    <div class="tile alt"><div class="num">27</div><div class="lbl">записей в журнале решений (агент, модель, уровень, событие, подпись)</div></div>
+    <div class="tile alt"><div class="num">1,73 руб.</div><div class="lbl">итого стоимость машинного времени прогона; дороже всех наставник (0,83 руб.)</div></div>
+    <div class="tile alt"><div class="num">13 373 / 1 125</div><div class="lbl">входных и выходных токенов; модели gpt-4o и gpt-4o-mini</div></div>
+    <div class="tile alt"><div class="num">1 / 1 / 1</div><div class="lbl">отказов в готовом ответе, эскалаций, техсбоев</div></div>
+  </div>
+
+  <div class="callout">
+    <h3>Что прототип НЕ показывает (честно)</h3>
+    <p>Науку, экономику, многолетнюю память, отряд и живого куратора в полном объеме (куратор здесь - сценарная подпись), реальную криптоподпись свидетельств. Это предметы следующих итераций.</p>
+    <p><b>1,73 рубля</b> - это стоимость только машинного времени одного прогона. Полная себестоимость студента в боевой модели - 250-350 тыс. руб. в год, и 60-70% из них - люди: кураторы, инженеры качества, гаранты. Главная мысль: интеллект перестал быть дорогой частью образования.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>Форсайт проведен панелью экспертов-агентов, 2026. Проект LLM-университет.</strong>
+    <span>Костяк выводов устойчив, формулировки и цифры - оценки порядка величины.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // tabs
+  var tabs=document.getElementById('tabs');
+  var panels=document.querySelectorAll('.panel');
+  tabs.addEventListener('click',function(e){
+    var b=e.target.closest('button[data-t]');
+    if(!b)return;
+    tabs.querySelectorAll('button').forEach(function(x){x.classList.remove('active');});
+    b.classList.add('active');
+    var id=b.getAttribute('data-t');
+    panels.forEach(function(p){p.classList.toggle('active',p.id===id);});
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  // trend filter
+  var tf=document.getElementById('tfilter');
+  var cards=document.querySelectorAll('#tgrid .tcard');
+  tf.addEventListener('click',function(e){
+    var b=e.target.closest('button[data-f]');
+    if(!b)return;
+    tf.querySelectorAll('button').forEach(function(x){x.classList.remove('active');});
+    b.classList.add('active');
+    var f=b.getAttribute('data-f');
+    cards.forEach(function(c){
+      var g=c.getAttribute('data-groups');
+      c.style.display=(f==='all'||g===f)?'':'none';
+    });
+  });
+
+  // events accordion (timeline)
+  document.querySelectorAll('#tl .ev > button').forEach(function(btn){
+    btn.addEventListener('click',function(){btn.parentElement.classList.toggle('open');});
+  });
+
+  // nodes accordion
+  document.querySelectorAll('#nodes .acc > button').forEach(function(btn){
+    btn.addEventListener('click',function(){btn.parentElement.classList.toggle('open');});
+  });
+
+  // open main node UD1 by default
+  var main=document.querySelector('#nodes .acc.main');
+  if(main)main.classList.add('open');
+})();
+</script>
+</body>
+</html>
