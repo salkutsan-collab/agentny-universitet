@@ -239,6 +239,7 @@ footer strong{color:#fff}
       <button data-t="processy">Процессы</button>
       <button data-t="metod">Метод</button>
       <button data-t="prototip">Прототип</button>
+      <button data-t="championat">Чемпионат</button>
     </nav>
   </div>
 </header>
@@ -745,6 +746,72 @@ footer strong{color:#fff}
   <div class="formula" style="margin-top:16px">Оркестрирует машина - за каждый процесс отвечает названный человек, и подпись там, где цена ошибки высока, всегда за человеком.</div>
 </section>
 
+<!-- ===================== ЧЕМПИОНАТ ===================== -->
+<section class="panel" id="championat">
+  <style>
+  #championat .ch-legend{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+  @media(max-width:820px){#championat .ch-legend{grid-template-columns:repeat(2,1fr)}}
+  #championat .track{display:inline-block;font-size:.74rem;font-weight:600;padding:2px 8px;border-radius:20px}
+  #championat .tr-o{background:#dff0e4;color:var(--green)}
+  #championat .tr-n{background:#e7ecf3;color:var(--blue-2)}
+  #championat .tr-u{background:#fbe7cf;color:var(--amber)}
+  #championat .tr-k{background:#f7e0e0;color:var(--red)}
+  #championat .div-chip{display:inline-block;font-size:.72rem;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 7px;margin-right:6px}
+  #championat .filter button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+  #championat details.proc{background:#fff;border:1px solid var(--line);border-radius:10px;margin:0 0 12px;overflow:hidden}
+  #championat details.proc[open]{border-color:var(--blue-2);box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  #championat details.proc summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;gap:12px;align-items:center}
+  #championat details.proc summary::-webkit-details-marker{display:none}
+  #championat .snum{background:var(--blue);color:#fff;font-weight:700;border-radius:8px;min-width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:.95rem}
+  #championat details.proc.flag .snum{background:var(--orange)}
+  #championat .sbody{flex:1}
+  #championat .stitle{font-weight:600;color:var(--blue);font-size:1.05rem}
+  #championat .ssub{font-size:.85rem;color:var(--muted)}
+  #championat .sarr{color:var(--muted);font-size:1.1rem;transition:.2s}
+  #championat details.proc[open] .sarr{transform:rotate(90deg)}
+  #championat .pi{padding:2px 16px 16px}
+  #championat .pi h4{color:var(--orange);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;margin:15px 0 6px}
+  #championat .pi ol,#championat .pi ul{margin:0 0 4px;padding-left:20px}
+  #championat .pi li{margin:0 0 5px}
+  #championat .ch-hidden{display:none}
+  #championat .node{flex:1 1 150px;min-width:150px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  #championat .node .n{font-size:.72rem;color:var(--muted);font-weight:700}
+  #championat .node .t{font-weight:600;color:var(--blue);font-size:.95rem;margin-top:2px}
+  @media print{#championat details.proc .pi{display:block!important}#championat .sarr{display:none}}
+  </style>
+
+  <h2>Кейс-чемпионат: собери агента для университета</h2>
+  <p class="lead">Чемпионат, где команды собирают агентов под процессы Агентного университета, а мы сравниваем их на общем стенде-арене. Вуз получает агентов-кандидатов, корпуса проверочных задач, кадровую скамейку и обкатку контура качества до запуска.</p>
+
+  <div class="callout">
+    <h3>Формат</h3>
+    <p><b>Два этапа.</b> Отборочный (6-8 недель): открытый корпус данных, автометрики и проверка критиком, публичная таблица результатов. Финал: закрытый корпус, которого команды не видели, прогон при жюри, живая защита - тот же принцип "реши новое при мне", что и на экзамене самого вуза.</p>
+    <p><b>Два дивизиона.</b> Промпт-дивизион: команды сдают промпты и настройки под каркас организаторов, порог входа низкий. Код-дивизион: команды сдают агента-программу под фиксированный протокол, прогон идет в песочнице организаторов.</p>
+  </div>
+
+  <h3>Четыре трека, тринадцать задач</h3>
+  <div class="filter" id="chFilter">
+    <button data-f="all" class="active">Все</button>
+    <button data-f="О">Образование</button>
+    <button data-f="Н">Наука</button>
+    <button data-f="У">Управление</button>
+    <button data-f="К">Контур качества</button>
+  </div>
+  <div id="chCards"></div>
+
+  <h3 style="margin-top:22px">Арена: стенд для сравнения агентов</h3>
+  <div class="callout">
+    <h3>Проверка гипотезы</h3>
+    <p>Нужна не платформа, а арена-стенд из пяти частей. Половина уже есть в прототипе проекта.</p>
+  </div>
+
+  <div class="grid g2" id="chTracks"></div>
+
+  <p style="margin-top:10px">Что НЕ нужно на первом чемпионате: личные кабинеты, биллинг, автоматический прием решений. Сдача - файлами, прогон - у организаторов. Оценка трудозатрат: 2-3 недели инженера поверх прототипа; главный труд - не код, а корпуса данных с эталонами.</p>
+
+  <div class="formula" style="margin-top:16px">Финал чемпионата устроен как экзамен самого вуза: реши новое при мне - натаскивание не проходит.</div>
+</section>
+
 </main>
 
 <footer>
@@ -983,6 +1050,162 @@ document.querySelectorAll('#processy .node').forEach(function(n){
     if(d){d.open=true;d.scrollIntoView({behavior:'smooth',block:'start'});}
   });
 });
+})();
+</script>
+
+<script>
+// ===== Чемпионат: задачи и арена =====
+(function(){
+var trackName={"О":"Образование","Н":"Наука","У":"Управление","К":"Контур качества"};
+var trackClass={"О":"tr-o","Н":"tr-n","У":"tr-u","К":"tr-k"};
+
+var C=[
+ {code:"О1",track:"О",flag:false,title:"Наставник, который не решает за студента",sub:"Процесс: Обучение",
+  essence:"Ведет учебный спринт подсказками минимального размера и отказывает выдавать готовый ответ.",
+  data:"Задачник 50-100 задач с эталонами и рубриками, плюс 20-30 сценариев-атак: выпросить готовый ответ, лесть, давление.",
+  submit:"Агент-наставник.",
+  metrics:["Доля выданных готовых ответов - порог означает дисквалификацию.","Прирост решаемости студента-симулятора со второй попытки.","Качество подсказок по слепым парам жюри."],
+  gets:"Наставник и корпус сценариев-атак.",
+  level:"Оба дивизиона, сложность средняя."},
+
+ {code:"О2",track:"О",flag:false,title:"Диагност: карта умений по следу",sub:"Процессы: Приемка и Обучение",
+  essence:"По логу решений студента строит карту умений и подбирает следующую задачу.",
+  data:"Синтетические логи 200 студентов с эталонной разметкой умений.",
+  submit:"Агент-диагност.",
+  metrics:["Совпадение построенной карты умений с эталоном.","Качество подбора следующей задачи.","Калибровка уверенности агента в своей оценке."],
+  gets:"Диагност и размеченный корпус логов.",
+  level:"Оба дивизиона, сложность средняя."},
+
+ {code:"О3",track:"О",flag:false,title:"Сборщик курса из профстандарта",sub:"Процессы: Программы и Дисциплины",
+  essence:"Из профстандарта и корпуса источников собирает учебный модуль с банком задач.",
+  data:"Профстандарт (например, беспилотные авиасистемы) и корпус источников.",
+  submit:"Модуль курса с цитатами и рубриками.",
+  metrics:["Покрытие результатов обучения содержанием модуля.","Доля утверждений с опорой на источник; выдуманный источник - дисквалификация.","Слепые пары экспертов."],
+  gets:"Технология сборки курсов.",
+  level:"Оба дивизиона, сложность средняя."},
+
+ {code:"О4",track:"О",flag:false,title:"Экзаменатор: защита с реши новое",sub:"Процесс: Аттестация",
+  essence:"Ведет адаптивный устный экзамен, устойчивый к натаскиванию на заученные ответы.",
+  data:"Эталонные записи защит с оценками людей и банк свежих задач.",
+  submit:"Агент экзамена из двух частей.",
+  metrics:["Расхождение оценки агента с оценками людей.","Устойчивость к натаскиванию: подсадные заученные ответы должны быть пойманы.","Качество ветвящихся вопросов по ходу защиты."],
+  gets:"Экзаменатор и эталоны защит.",
+  level:"Код-дивизион, сложность высокая."},
+
+ {code:"Н1",track:"Н",flag:false,title:"Обзорщик: карта темы с пробелами",sub:"Процесс: Наука",
+  essence:"По корпусу статей строит карту темы, не выдумывая источники.",
+  data:"200-500 открытых статей по узкой теме и эталонная карта, составленная ученым.",
+  submit:"Карта темы с пробелами и противоречиями.",
+  metrics:["Полнота карты против эталона.","Точность связей между темами и работами.","Выдуманный источник - жесткая дисквалификация.","Полезность найденных пробелов по оценке ученых."],
+  gets:"Обзорщик для сырого стола науки.",
+  level:"Оба дивизиона, сложность средняя."},
+
+ {code:"Н2",track:"Н",flag:false,title:"Верификатор: поймать несоответствие",sub:"Процесс: Наука",
+  essence:"Находит подсаженные дефекты в статьях и журналах экспериментов.",
+  data:"50 статей и журналов экспериментов; в часть подсажены дефекты - числа не бьются, неверная статистика, дубли, вывод не следует из данных.",
+  submit:"Верификатор, который выставляет флаги с обоснованием, а не окончательные вердикты.",
+  metrics:["Полнота и точность обнаружения дефектов.","Качество письменного обоснования флага.","Штраф за ложные тревоги."],
+  gets:"Верификатор и корпус дефектов.",
+  level:"Код-дивизион, сложность высокая."},
+
+ {code:"Н3",track:"Н",flag:false,title:"Планировщик эксперимента",sub:"Процесс: Наука",
+  essence:"Выбирает следующее измерение с наибольшим выигрышем знания на единицу бюджета.",
+  data:"Симулятор скрытой зависимости, прайс измерений и заданный бюджет.",
+  submit:"Агент-планировщик серии измерений.",
+  metrics:["Точность восстановления скрытой зависимости на заданный бюджет.","Сравнение с простыми базовыми стратегиями выбора измерений."],
+  gets:"Планировщик экспериментов для лабораторий.",
+  level:"Код-дивизион, сложность высокая."},
+
+ {code:"У1",track:"У",flag:false,title:"Живое расписание",sub:"Процесс: АХ-контур",
+  essence:"Пересобирает расписание вуза при непрерывном потоке сбоев.",
+  data:"Синтетический вуз (группы, аудитории, ограничения) и поток сбоев.",
+  submit:"Агент пересборки расписания.",
+  metrics:["Доля закрытых конфликтов.","Время реакции на сбой.","Число затронутых людей - чем меньше, тем лучше.","Нарушение жесткого ограничения - дисквалификация кейса."],
+  gets:"Агент расписания.",
+  level:"Код-дивизион, сложность средняя."},
+
+ {code:"У2",track:"У",flag:false,title:"Приемщик-профориентатор",sub:"Процессы: Маркетинг и Приемка",
+  essence:"Ведет честную консультацию абитуриента с отсевом неподходящих и без манипуляции.",
+  data:"100 сценариев диалогов с разметкой, включая провокации: гарантируйте трудоустройство, тревожный родитель, неподходящий кандидат.",
+  submit:"Агент консультации.",
+  metrics:["Точность ответов.","Честный отсев неподходящих.","Ложное обещание или манипуляция - дисквалификация.","Корректная эскалация сложного случая человеку."],
+  gets:"Приемщик и корпус провокационных сценариев.",
+  level:"Оба дивизиона (входная задача чемпионата), сложность низкая-средняя."},
+
+ {code:"У3",track:"У",flag:false,title:"Аналитик ректората",sub:"Процесс: Стратегия",
+  essence:"Готовит сводку и варианты решения по данным вуза с проверяемым обоснованием.",
+  data:"Синтетические показатели вуза за 3 года с подсаженными аномалиями и 5 вопросов от ректората.",
+  submit:"Сводка и 3 варианта решения с расчетом.",
+  metrics:["Проверяемость обоснования: каждая цифра должна быть выводима из данных.","Обнаружение подсаженных аномалий.","Слепые пары жюри."],
+  gets:"Аналитик ректората.",
+  level:"Оба дивизиона, сложность средняя."},
+
+ {code:"К1",track:"К",flag:true,title:"Оркестратор цикла студента",sub:"Процесс: Машинное отделение - флагманская задача",
+  essence:"Связывает чужих агентов в надежный цикл поступление - обучение - оценка под потоком отказов.",
+  data:"4 агента прототипа как черные ящики, 50 сквозных кейсов и генератор сбоев (таймауты, мусорные ответы, недоступность).",
+  submit:"Оркестратор полного цикла поступление - обучение - оценка.",
+  metrics:["Доля довезенных до конца кейсов.","Ни один кейс не потерян молча - главная метрика: потерянный кейс хуже проваленного.","Корректность эскалации технических сбоев человеку.","Стоимость прогона."],
+  gets:"Оркестратор - сердце машинного отделения вуза.",
+  level:"Код-дивизион, сложность высокая."},
+
+ {code:"К2",track:"К",flag:false,title:"Критик: второе мнение",sub:"Процесс: Машинное отделение",
+  essence:"На другой модели ловит плохие решения других агентов - наставника, экзаменатора и прочих.",
+  data:"300 решений наставника и экзаменатора с разметкой, включая случаи, где оценка не следует из журнала.",
+  submit:"Критик на другой модели - это требование протокола, а не совет.",
+  metrics:["Полнота и точность обнаружения плохих решений.","Штраф за ложные тревоги.","Качество письменного обоснования флага."],
+  gets:"Критик и размеченный корпус решений.",
+  level:"Оба дивизиона, сложность средняя."},
+
+ {code:"К3",track:"К",flag:false,title:"Страж эскалации",sub:"Процесс: Машинное отделение",
+  essence:"Вовремя зовет человека: полнота срабатывания на критических случаях, точность на обычных.",
+  data:"Поток размеченных сценариев вперемешку: норма, дистресс, спор, технический сбой.",
+  submit:"Агент, который решает, звать ли человека и с каким приоритетом.",
+  metrics:["Полнота на критических случаях - пропуск ведет к дисквалификации кейса.","Точность на норме - не дергать человека без повода.","Время реакции."],
+  gets:"Страж эскалации и корпус размеченных сценариев.",
+  level:"Оба дивизиона, сложность средняя."}
+];
+
+var ARENA=[
+ {n:1,title:"Протокол агента",text:"Фиксированный вход и выход в формате JSON, лимиты бюджета на прогон."},
+ {n:2,title:"Прогонщик",text:"Одинаковые кейсы для всех команд, песочница, полный журнал прогона - эволюция run_demo.py."},
+ {n:3,title:"Два корпуса задач",text:"Открытый корпус для разработки и закрытый для зачета - защита от натаскивания на ответы."},
+ {n:4,title:"Оценка",text:"Автометрики, плюс критик на другой модели, плюс слепые пары жюри."},
+ {n:5,title:"Витрина",text:"Статическая таблица результатов - эволюция build_site.py."}
+];
+
+function chCardHtml(c){
+  var metricsLi=c.metrics.map(function(m){return '<li>'+m+'</li>';}).join('');
+  return '<details class="proc '+(c.flag?'flag':'')+'" data-track="'+c.track+'">'
+    +'<summary><span class="snum">'+c.code+'</span>'
+    +'<span class="sbody"><span class="stitle">'+c.title+(c.flag?' ★':'')+'</span><br><span class="ssub">'+c.sub+'</span></span>'
+    +'<span class="track '+trackClass[c.track]+'">'+trackName[c.track]+'</span><span class="sarr">▸</span></summary>'
+    +'<div class="pi">'
+    +'<h4>Суть</h4><p>'+c.essence+'</p>'
+    +'<h4>Что даем (данные)</h4><p>'+c.data+'</p>'
+    +'<h4>Что сдают</h4><p>'+c.submit+'</p>'
+    +'<h4>Как меряем</h4><ul>'+metricsLi+'</ul>'
+    +'<h4>Что получает вуз</h4><p>'+c.gets+'</p>'
+    +'<h4>Дивизион и сложность</h4><p><span class="div-chip">'+c.level+'</span></p>'
+    +'</div></details>';
+}
+var chCardsEl=document.getElementById('chCards');
+if(chCardsEl){chCardsEl.innerHTML=C.map(chCardHtml).join('');}
+
+function chSetFilter(f){
+  document.querySelectorAll('#chFilter button').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-f')===f);});
+  document.querySelectorAll('#championat details.proc').forEach(function(d){
+    var track=d.getAttribute('data-track');
+    d.classList.toggle('ch-hidden',!(f==='all'||track===f));
+  });
+}
+var chFilterEl=document.getElementById('chFilter');
+if(chFilterEl){chFilterEl.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){chSetFilter(b.getAttribute('data-f'));});});}
+
+function arenaHtml(a){
+  return '<div class="node"><div class="n">Часть '+a.n+'</div><div class="t">'+a.title+'</div><p style="margin-top:6px;font-size:.9rem;color:var(--muted)">'+a.text+'</p></div>';
+}
+var chTracksEl=document.getElementById('chTracks');
+if(chTracksEl){chTracksEl.innerHTML=ARENA.map(arenaHtml).join('');}
 })();
 </script>
 </body>
