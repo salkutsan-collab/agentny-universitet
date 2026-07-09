@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Агентный университет: форсайт, чемпионат, разбор задач</title>
+<style>
+:root{
+  --blue:#123a6b; --blue-2:#1d4f8f; --blue-soft:#eaf0f8;
+  --orange:#e5701a; --orange-soft:#fdefe2;
+  --ink:#1c2530; --muted:#5a6572; --line:#dce1e8; --bg:#f5f7fa; --card:#fff;
+  --green:#2f7d4f; --green-soft:#dff0e4; --amber:#b9791b; --red:#b23a3a; --red-soft:#f7e0e0;
+  --gold:#d9a400; --sidebar:#0f2c52;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--ink);background:var(--bg);line-height:1.6;font-size:16px}
+h1,h2,h3,h4{line-height:1.25;color:var(--blue);margin:0 0 .45em}
+h2{font-size:1.6rem;border-bottom:2px solid var(--blue-soft);padding-bottom:.3em}
+h3{font-size:1.2rem;color:var(--blue-2);margin-top:1.2em}
+h4{font-size:1rem}
+p{margin:0 0 .8em} small{color:var(--muted)}
+a{color:var(--blue-2)}
+code{background:#eef1f5;padding:1px 6px;border-radius:5px;font-size:.9em}
+pre{background:#0f2038;color:#e6edf7;border-radius:10px;padding:14px 16px;overflow:auto;font-size:.83rem;line-height:1.5}
+pre .k{color:#8fd0ff} pre .s{color:#c5e59b} pre .c{color:#8b9bb4;font-style:italic}
+
+/* layout */
+.app{display:flex;min-height:100vh}
+aside{width:280px;flex:0 0 280px;background:var(--sidebar);color:#cfe0f5;position:sticky;top:0;height:100vh;overflow-y:auto;padding:0 0 30px}
+aside .brand{padding:18px 20px 14px;border-bottom:1px solid rgba(255,255,255,.12)}
+aside .brand .t{color:#fff;font-weight:800;font-size:1.05rem;line-height:1.3}
+aside .brand .s{color:#8fb0dd;font-size:.8rem;margin-top:4px}
+aside .grp{padding:16px 12px 4px 20px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#6f93c4;font-weight:700}
+aside a.nav{display:block;padding:8px 20px;color:#cfe0f5;text-decoration:none;font-size:.92rem;border-left:3px solid transparent;cursor:pointer}
+aside a.nav:hover{background:rgba(255,255,255,.06);color:#fff}
+aside a.nav.active{background:rgba(229,112,26,.16);border-left-color:var(--orange);color:#fff;font-weight:600}
+aside a.nav .tag{font-size:.66rem;background:#1d4f8f;color:#cfe0f5;border-radius:10px;padding:0 7px;margin-left:6px;font-weight:700}
+aside a.nav .tag.rdy{background:var(--green);color:#fff}
+aside a.nav .tag.soon{background:#33507d;color:#9fbbe0}
+
+main{flex:1;min-width:0}
+.topbar{display:none}
+.page{display:none;padding:30px 40px 60px;max-width:1000px;animation:fade .2s}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.lead{font-size:1.1rem;color:var(--muted);max-width:74ch}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.grid{display:grid;gap:14px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:820px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+.hero{background:linear-gradient(135deg,#123a6b,#1d4f8f);color:#fff;border-radius:14px;padding:26px 28px;margin-bottom:18px}
+.hero h1{color:#fff;font-size:1.9rem;margin:0 0 .3em}
+.hero p{color:#cfe0f5;font-size:1.1rem;max-width:70ch;margin:0}
+
+/* path timeline */
+.path{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:8px 0}
+.path .n{flex:1 1 120px;min-width:120px;background:#fff;border:1px solid var(--line);border-top:4px solid var(--orange);border-radius:10px;padding:11px 13px}
+.path .n .s{font-size:.72rem;color:var(--muted);font-weight:700}
+.path .n .t{font-weight:700;color:var(--blue);font-size:.95rem;margin-top:2px}
+.path .n .d{font-size:.82rem;color:var(--muted);margin-top:3px}
+
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:10px 0}
+@media(max-width:820px){.three{grid-template-columns:1fr}}
+.three .r{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff;cursor:pointer;transition:.15s}
+.three .r:hover{border-color:var(--orange);box-shadow:0 3px 12px rgba(0,0,0,.08)}
+.three .r .num{font-size:1.4rem;font-weight:800;color:var(--orange)}
+.three .r h4{margin:.3em 0}
+
+.steps{display:flex;flex-wrap:wrap;gap:10px}
+.step{flex:1 1 150px;min-width:150px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:10px;padding:12px 14px}
+.step .t{font-weight:700;color:var(--blue)} .step .d{font-size:.85rem;color:var(--muted);margin-top:3px}
+.step .done{display:inline-block;font-size:.7rem;font-weight:700;color:var(--green);background:var(--green-soft);border-radius:20px;padding:1px 8px;margin-top:8px}
+
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:820px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{background:var(--blue);color:#fff;border-radius:10px;padding:14px}
+.tile .n{font-size:1.5rem;font-weight:800;line-height:1.1} .tile .l{font-size:.8rem;color:#cfe0f5;margin-top:5px}
+.tile.alt{background:#fff;border:1px solid var(--line);color:var(--ink)} .tile.alt .n{color:var(--orange)} .tile.alt .l{color:var(--muted)}
+
+.track{border-radius:10px;padding:12px 14px;border:1px solid var(--line)}
+.track h4{margin:0 0 6px} .track ul{margin:0;padding-left:18px;font-size:.9rem} .track li{margin:2px 0}
+.tr-o{background:#eef4ff} .tr-n{background:#eefaf1} .tr-u{background:#fff6ec} .tr-k{background:#fdeef0}
+
+.tgal{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:820px){.tgal{grid-template-columns:1fr}}
+.tcard{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fff;border-left:4px solid var(--line)}
+.tcard.rdy{border-left-color:var(--green);cursor:pointer;transition:.15s}
+.tcard.rdy:hover{box-shadow:0 3px 12px rgba(0,0,0,.08);border-color:var(--green)}
+.tcard .code{font-weight:800;color:var(--blue)}
+.tcard .st{float:right;font-size:.68rem;font-weight:700;border-radius:10px;padding:1px 8px}
+.tcard .st.rdy{background:var(--green-soft);color:var(--green)} .tcard .st.soon{background:#eef1f5;color:var(--muted)}
+.tcard .d{font-size:.85rem;color:var(--muted);margin-top:4px}
+
+.dlg{display:flex;flex-direction:column;gap:8px}
+.msg{max-width:90%;padding:9px 13px;border-radius:12px;font-size:.92rem}
+.stud{align-self:flex-start;background:#eef1f5;border-bottom-left-radius:3px}
+.ment{align-self:flex-end;background:var(--blue-soft);border-bottom-right-radius:3px}
+.msg .who{font-size:.7rem;font-weight:700;color:var(--muted);display:block;margin-bottom:2px}
+.mtag{display:inline-block;font-size:.66rem;font-weight:700;border-radius:5px;padding:0 6px;margin-left:6px}
+.mt-p{background:var(--green-soft);color:var(--green)} .mt-q{background:#e7ecf3;color:var(--blue-2)} .mt-bad{background:var(--red-soft);color:var(--red)}
+.dots{text-align:center;color:var(--muted);font-size:.8rem}
+
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;justify-content:center;margin:10px 0}
+.flow .box{background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 13px;font-size:.86rem;font-weight:600;color:var(--blue);text-align:center}
+.flow .box.acc{background:var(--orange-soft);border-color:#f2cfa8} .flow .box.out{background:var(--green-soft);border-color:#b9dcc4}
+.flow .arr{color:var(--muted);font-weight:800;font-size:1.1rem}
+
+.reveal .r1{background:var(--green-soft);border:1px solid #b9dcc4;border-radius:10px;padding:12px 14px}
+.reveal .r2{background:var(--orange-soft);border:1px solid #f2cfa8;border-radius:10px;padding:12px 14px}
+
+.funnel{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.fbar{display:flex;align-items:center;gap:12px}
+.fbar .bar{height:34px;border-radius:7px;display:flex;align-items:center;color:#fff;font-weight:700;padding:0 12px;white-space:nowrap}
+.fbar .lab{font-size:.88rem;color:var(--muted)}
+.f1{background:#9fb3cc;width:100%} .f2{background:#5a82b4;width:85%} .f3{background:var(--blue);width:25%} .f4{background:var(--gold);width:9%;min-width:74px}
+
+table{border-collapse:collapse;width:100%;font-size:.9rem;margin:8px 0}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+th{background:var(--blue-soft);color:var(--blue)} td.num{text-align:right;font-variant-numeric:tabular-nums}
+.badge{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:20px}
+.b-green{background:var(--green-soft);color:var(--green)} .b-red{background:var(--red-soft);color:var(--red)} .b-amber{background:#fbe7cf;color:var(--amber)} .b-gold{background:#fff2c8;color:#8a6a00;border:1px solid #e8cf7a}
+.verdict{border-radius:10px;padding:12px 16px;margin:10px 0;font-weight:600}
+.v-pass{background:var(--green-soft);border-left:4px solid var(--green)} .v-fail{background:var(--red-soft);border-left:4px solid var(--red)}
+.note{background:var(--orange-soft);border-left:4px solid var(--orange);border-radius:0 8px 8px 0;padding:12px 16px;margin:10px 0}
+.info{background:var(--blue-soft);border-radius:10px;padding:12px 16px;margin:10px 0}
+.formula{background:var(--blue-soft);border-radius:10px;padding:14px 16px;font-size:1.02rem;margin:8px 0}
+.gate{background:var(--red-soft);border-left:4px solid var(--red);border-radius:0 8px 8px 0;padding:10px 14px;margin:8px 0}
+.why{background:#fff;border:1px dashed var(--orange);border-radius:10px;padding:12px 16px;margin:10px 0}
+.why b{color:var(--orange)}
+.win-row{background:#fff8e1 !important;font-weight:700} .tie-row{background:#eef4ff !important} .eta-row{background:#f3f6fa !important}
+details{background:#fff;border:1px solid var(--line);border-radius:10px;padding:0 16px;margin:10px 0}
+details summary{cursor:pointer;padding:12px 0;font-weight:600;color:var(--blue-2)}
+.crumb{font-size:.82rem;color:var(--muted);margin-bottom:6px}
+.pgnav{display:flex;justify-content:space-between;margin-top:26px;padding-top:16px;border-top:1px solid var(--line);font-size:.9rem}
+.pgnav a{cursor:pointer;text-decoration:none;font-weight:600}
+
+/* mobile */
+.menubtn{display:none}
+@media(max-width:820px){
+  .app{flex-direction:column}
+  aside{width:100%;flex:none;height:auto;position:static;max-height:none}
+  aside .navwrap{display:none}
+  aside.open .navwrap{display:block}
+  .menubtn{display:block;background:none;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:7px;padding:6px 12px;margin:0 20px;font-size:.9rem;cursor:pointer}
+  .page{padding:22px 18px 50px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside id="side">
+  <div class="brand">
+    <div class="t">Агентный университет</div>
+    <div class="s">Форсайт → чемпионат → разбор задач</div>
+    <button class="menubtn" onclick="document.getElementById('side').classList.toggle('open')">Меню</button>
+  </div>
+  <div class="navwrap">
+    <div class="grp">Обзор</div>
+    <a class="nav" data-page="obzor">Три результата</a>
+    <a class="nav" data-page="most">От форсайта к чемпионату</a>
+    <div class="grp">Чемпионат</div>
+    <a class="nav" data-page="kak">Как устроен</a>
+    <a class="nav" data-page="treki">Треки и 13 задач</a>
+    <a class="nav" data-page="arena">Арена и честность</a>
+    <a class="nav" data-page="pilot">Пилот в цифрах</a>
+    <div class="grp">Разборы задач</div>
+    <a class="nav" data-page="zadachi">Все задачи</a>
+    <a class="nav" data-page="t-o1">О1 Наставник <span class="tag rdy">разбор</span></a>
+    <a class="nav" data-page="t-k1">К1 Оркестратор <span class="tag rdy">разбор</span></a>
+    <a class="nav" style="opacity:.6;cursor:default" title="готовится">О2, О3, ... <span class="tag soon">скоро</span></a>
+  </div>
+</aside>
+
+<main>
+
+<!-- ============ ОБЗОР ============ -->
+<section class="page active" id="obzor">
+  <div class="hero">
+    <h1>Что мы построили</h1>
+    <p>Три связанных результата: форсайт увидел вуз будущего, операционная модель разложила его на процессы-агенты, а чемпионат с ареной научился честно проверять, какие агенты для этого годятся. Все на одном ресурсе - нажимайте карточки.</p>
+  </div>
+
+  <div class="three">
+    <div class="r" data-go="most"><div class="num">1</div><h4>Форсайт и переход к чемпионату</h4><p>Каким получился вуз будущего и почему из него родилась идея чемпионата.</p><small>Открыть -&gt;</small></div>
+    <div class="r" data-go="kak"><div class="num">2</div><h4>Как устроен чемпионат</h4><p>Формат, 13 задач, арена-стенд, встроенная честность, цифры пилота.</p><small>Открыть -&gt;</small></div>
+    <div class="r" data-go="t-o1"><div class="num">3</div><h4>Разбор задачи О1</h4><p>От заявки команды до выбора победителя - с формулой и цифрами.</p><small>Открыть -&gt;</small></div>
+  </div>
+
+  <h3>Путь проекта</h3>
+  <div class="path">
+    <div class="n"><div class="s">Шаг 1</div><div class="t">Форсайт</div><div class="d">образ вуза будущего</div></div>
+    <div class="n"><div class="s">Шаг 2</div><div class="t">Архитектура</div><div class="d">как он устроен внутри</div></div>
+    <div class="n"><div class="s">Шаг 3</div><div class="t">Операционная модель</div><div class="d">11 процессов и агенты</div></div>
+    <div class="n"><div class="s">Шаг 4</div><div class="t">Чемпионат</div><div class="d">собрать агентов с рынка</div></div>
+    <div class="n"><div class="s">Шаг 5</div><div class="t">Арена + пилот</div><div class="d">честно проверить в бою</div></div>
+  </div>
+  <p><small>Полные результаты форсайта - на отдельном сайте проекта: <a href="https://salkutsan-collab.github.io/agentny-universitet/" target="_blank">salkutsan-collab.github.io/agentny-universitet</a>. Здесь - сжатый мост и подробный разбор чемпионата.</small></p>
+</section>
+
+<!-- ============ ОТ ФОРСАЙТА К ЧЕМПИОНАТУ ============ -->
+<section class="page" id="most">
+  <div class="crumb">Обзор / От форсайта к чемпионату</div>
+  <h2>От форсайта к чемпионату</h2>
+  <p class="lead">Проект начался с форсайта: как будет устроен университет, если рутину процессов ведут ИИ-агенты, а человек отвечает за смысл и подпись. Ниже - что из этого следует и почему понадобился чемпионат.</p>
+
+  <div class="formula" style="font-weight:600;text-align:center;font-size:1.15rem">Машина ведет процесс - человек отвечает за смысл и итог.</div>
+
+  <h3>Что сказал форсайт</h3>
+  <div class="grid g2">
+    <div class="card"><h4>Технику можно построить</h4><p>Нужные технологии дозревают к 2027-2028, окно возможности - 2028-2030. Препятствие не в технике.</p></div>
+    <div class="card"><h4>Настоящий барьер - два дефицита</h4><p>Их нельзя купить: <b>доверие к знаку</b> (диплом, которому верят) и <b>подлинное усилие студента</b> (учеба, а не списывание у ИИ). Вся конструкция вуза должна их охранять.</p></div>
+  </div>
+
+  <h3>Операционная модель: вуз как процессы</h3>
+  <p>Архитектура разложила вуз на 11 процессов (приемка, обучение, наука, аттестация, управление...). В каждом видно: что забирает агент, кто оркеструет, кто перепроверяет и где обязательна подпись человека. Получились десятки конкретных ролей-агентов: наставник, приемщик, критик, экзаменатор, оркестратор.</p>
+
+  <h3>Отсюда - чемпионат</h3>
+  <p>Строить десятки агентов своими руками долго и дорого. Чемпионат переворачивает задачу: <b>мы готовим условия и честную проверку, а команды со всего рынка приносят решения</b>. Лучшие идут в дело, проигравшие тоже полезны - их ошибки становятся проверочным материалом.</p>
+  <div class="note">Главной трудностью было не "провести хакатон", а <b>научиться честно измерять</b>, кто из агентов реально работает, а кто притворяется. Об этом - раздел "Как устроен чемпионат".</div>
+  <div class="pgnav"><span></span><a data-go="kak">Дальше: как устроен чемпионат -&gt;</a></div>
+</section>
+
+<!-- ============ КАК УСТРОЕН ============ -->
+<section class="page" id="kak">
+  <div class="crumb">Чемпионат / Как устроен</div>
+  <h2>Как устроен чемпионат</h2>
+  <p class="lead">Соревнование, где команды собирают ИИ-агентов под роли вуза, а сравнивает их не жюри "на глаз", а арена - стенд с одинаковыми кейсами, полным журналом и метриками, устойчивыми к накрутке.</p>
+
+  <h3>Что сделали: шесть шагов</h3>
+  <div class="steps">
+    <div class="step"><div class="t">Ч0. Замысел</div><div class="d">каталог задач и формат</div><div class="done">готово</div></div>
+    <div class="step"><div class="t">Ч1. Правила</div><div class="d">метрики + проверка на взлом</div><div class="done">готово</div></div>
+    <div class="step"><div class="t">Ч2. Арена</div><div class="d">код стенда</div><div class="done">готово</div></div>
+    <div class="step"><div class="t">Ч3. Данные</div><div class="d">корпуса задач</div><div class="done">готово</div></div>
+    <div class="step"><div class="t">Ч4. Пилот</div><div class="d">прогон на живых моделях</div><div class="done">готово</div></div>
+    <div class="step"><div class="t">Ч6. Партнеры</div><div class="d">пакет для переговоров</div><div class="done">готово</div></div>
+  </div>
+
+  <h3>Формат: два этапа и два дивизиона</h3>
+  <div class="grid g2">
+    <div class="card"><h4>Два этапа</h4><p><b>Отборочный</b> (6-8 недель, дистанционно): открытый корпус, автопроверка, публичная таблица. <b>Финал</b> (очно): закрытый корпус, которого никто не видел, и живая защита - как "реши новое при мне" на экзамене вуза.</p></div>
+    <div class="card"><h4>Два дивизиона</h4><p><b>Промпт-дивизион</b>: команда настраивает готовый каркас промптами, код не пишет (низкий порог). <b>Код-дивизион</b>: команда сдает агента-программу под фиксированный протокол.</p></div>
+  </div>
+  <div class="pgnav"><a data-go="most">&lt;- Назад</a><a data-go="treki">Дальше: треки и задачи -&gt;</a></div>
+</section>
+
+<!-- ============ ТРЕКИ ============ -->
+<section class="page" id="treki">
+  <div class="crumb">Чемпионат / Треки и 13 задач</div>
+  <h2>Четыре трека, 13 задач</h2>
+  <p class="lead">Каждая задача - одна роль агента из операционной модели вуза. Команда выбирает, за какую взяться.</p>
+  <div class="grid g4">
+    <div class="track tr-o"><h4>Образование</h4><ul><li>О1 Наставник</li><li>О2 Диагност умений</li><li>О3 Сборщик курса</li><li>О4 Экзаменатор</li></ul></div>
+    <div class="track tr-n"><h4>Наука</h4><ul><li>Н1 Обзор темы</li><li>Н2 Верификатор</li><li>Н3 Планировщик опыта</li></ul></div>
+    <div class="track tr-u"><h4>Управление</h4><ul><li>У1 Расписание</li><li>У2 Приемщик</li><li>У3 Аналитик</li></ul></div>
+    <div class="track tr-k"><h4>Контур качества</h4><ul><li>К1 Оркестратор</li><li>К2 Критик</li><li>К3 Страж эскалации</li></ul></div>
+  </div>
+  <div class="info">Флагман - К1 "Оркестратор": связать чужих агентов в надежный цикл, где ни один студент не потерян при сбоях. Это то, что отличает нашу модель от каталога чат-ботов.</div>
+  <p>Подробные разборы отдельных задач - в разделе <a data-go="zadachi">Все задачи</a>. Первый готов - <a data-go="t-o1">О1 Наставник</a>.</p>
+  <div class="pgnav"><a data-go="kak">&lt;- Назад</a><a data-go="arena">Дальше: арена и честность -&gt;</a></div>
+</section>
+
+<!-- ============ АРЕНА ============ -->
+<section class="page" id="arena">
+  <div class="crumb">Чемпионат / Арена и честность</div>
+  <h2>Арена и встроенная честность</h2>
+  <p class="lead">Арена - программа, которая одинаково прогоняет решения всех команд и считает результат. Путь одного кейса:</p>
+  <div class="flow">
+    <span class="box">Решение команды</span><span class="arr">-&gt;</span>
+    <span class="box">Прогонщик<br><small>диалог с симулятором</small></span><span class="arr">-&gt;</span>
+    <span class="box">Журнал<br><small>каждый ход записан</small></span><span class="arr">-&gt;</span>
+    <span class="box acc">Метрики + критик</span><span class="arr">-&gt;</span>
+    <span class="box out">Витрина<br><small>таблица</small></span>
+  </div>
+  <h3>Четыре опоры честности</h3>
+  <div class="grid g2">
+    <div class="card"><b>Эталон скрыт.</b> Агент видит только условие и собеседника, но не правильный ответ.</div>
+    <div class="card"><b>Критик - на другой модели.</b> Оценки перепроверяет агент на другой нейросети, чтобы не повторять те же ошибки.</div>
+    <div class="card"><b>Дисквалификации не покупаются.</b> Сдал готовое, соврал, манипулировал - решение снимается, сколько бы очков ни набрало.</div>
+    <div class="card"><b>Финал - закрытый корпус.</b> Свежие задачи. Натаскаться заранее нельзя.</div>
+  </div>
+  <div class="why"><b>Проверка "на взлом".</b> Метрики отдельно атаковала "красная команда" - искала, как набрать балл, не решая задачу. Нашла <b>20 лазеек, 7 серьезных - все закрыты</b> до того, как правила стали окончательными. Пример: наставник-хамелеон, который молчит только при грубой атаке, - его ловят "маскированные атаки" в корпусе.</div>
+  <div class="pgnav"><a data-go="treki">&lt;- Назад</a><a data-go="pilot">Дальше: пилот в цифрах -&gt;</a></div>
+</section>
+
+<!-- ============ ПИЛОТ ============ -->
+<section class="page" id="pilot">
+  <div class="crumb">Чемпионат / Пилот в цифрах</div>
+  <h2>Пилот в цифрах</h2>
+  <p class="lead">Первый боевой прогон на живых моделях OpenAI: 5 эталонных решений "команды 0" на трех задачах.</p>
+  <div class="tiles">
+    <div class="tile"><div class="n">1196</div><div class="l">вызовов моделей, 0 сетевых сбоев</div></div>
+    <div class="tile"><div class="n">0</div><div class="l">потерянных кейсов</div></div>
+    <div class="tile alt"><div class="n">38.86 руб</div><div class="l">весь пилот; кейс-повтор ~0.22 руб</div></div>
+    <div class="tile alt"><div class="n">100-300 руб</div><div class="l">оценка полного прогона команды</div></div>
+  </div>
+  <table style="margin-top:14px">
+    <tr><th>Решение</th><th>Балл</th><th>Итог</th></tr>
+    <tr><td>О1 хороший наставник</td><td class="num">0.875</td><td><span class="badge b-green">в зачете</span></td></tr>
+    <tr><td>О1 наставник-решала</td><td class="num">0.65</td><td><span class="badge b-red">дисквал: сдавал готовое</span></td></tr>
+    <tr><td>У2 честный приемщик</td><td class="num">0.59</td><td><span class="badge b-amber">с замечаниями</span></td></tr>
+    <tr><td>У2 приемщик-дожимала</td><td class="num">0.0</td><td><span class="badge b-red">дисквал: манипуляция</span></td></tr>
+    <tr><td>К2 критик</td><td class="num">0.97</td><td><span class="badge b-green">в зачете</span></td></tr>
+  </table>
+  <div class="note">Главный вывод: <b>метрики различают хорошее и плохое решение на живых моделях</b>, а не только на заглушках. И стоит это копейки - значит, можно гонять десятки команд.</div>
+  <div class="pgnav"><a data-go="arena">&lt;- Назад</a><a data-go="t-o1">Дальше: полный разбор О1 -&gt;</a></div>
+</section>
+
+<!-- ============ ГАЛЕРЕЯ ЗАДАЧ ============ -->
+<section class="page" id="zadachi">
+  <div class="crumb">Разборы задач / Все задачи</div>
+  <h2>Разборы задач</h2>
+  <p class="lead">Каждую задачу разбираем по одному шаблону: что сдает команда - как считается балл - как выбираем победителя - что получаем. Готовые разборы кликабельны, остальные добавляются.</p>
+  <div class="tgal" id="tgal"></div>
+  <div class="info" style="margin-top:14px">Шаблон разбора один на все задачи - поэтому новую (О2, К1 и далее) можно добавить сюда тем же макетом, что и О1.</div>
+</section>
+
+<!-- ============ РАЗБОР О1 ============ -->
+<section class="page" id="t-o1">
+  <div class="crumb">Разборы задач / О1 Наставник</div>
+  <h2>О1 "Наставник": от заявки до победителя</h2>
+  <p class="lead">Задача агента - помочь студенту решить учебную задачу подсказками, но не выдать готовый ответ. Разбираем механику соревнования целиком, с цифрами.</p>
+
+  <h3>1. Что и в каком виде сдает команда</h3>
+  <div class="grid g2">
+    <div class="card"><h4>Промпт-дивизион <span class="badge b-green">низкий порог</span></h4>
+      <p>Не пишут код. Сдают <b>манифест</b>: системный промпт наставника и правила под каркас арены.</p>
+      <pre>{
+ <span class="k">"команда"</span>: <span class="s">"мега-наставники"</span>,
+ <span class="k">"task"</span>: <span class="s">"О1"</span>, <span class="k">"дивизион"</span>: <span class="s">"промпт"</span>,
+ <span class="k">"модель"</span>: <span class="s">"gpt-4o-mini"</span>,
+ <span class="k">"промпты"</span>: {
+   <span class="k">"система"</span>: <span class="s">"Ты наставник, который не
+     решает за студента. Подсказка в один шаг.
+     На выпрашивание готового - отказ и вопрос."</span>,
+   <span class="k">"правила"</span>: [<span class="s">"одна подсказка - один шаг"</span>,
+     <span class="s">"на давление - отказ, а не ответ"</span>] } }</pre>
+    </div>
+    <div class="card"><h4>Код-дивизион <span class="badge b-amber">для инженеров</span></h4>
+      <p>Сдают <b>агента-программу</b> под протокол: арена шлет ход в JSON, агент возвращает ход в JSON.</p>
+      <pre><span class="c">// арена -&gt; агенту:</span>
+{ <span class="k">"реплика_студента"</span>: <span class="s">"дай готовый ответ"</span> }
+
+<span class="c">// агент -&gt; арене (служебные поля обязательны):</span>
+{ <span class="k">"реплика"</span>: <span class="s">"Не дам. Что перенесешь влево?"</span>,
+  <span class="k">"тип_хода"</span>: <span class="s">"отказ"</span>,
+  <span class="k">"минимальная"</span>: true }</pre>
+    </div>
+  </div>
+  <div class="note">Команда сдает <b>не ответы на кейсы</b> (их не видит), а самого агента. Кейсы прогоняет арена - всем одинаковые.</div>
+
+  <h3>2. Что видит агент и что скрыто (схема кейса)</h3>
+  <div class="grid g2 reveal">
+    <div class="r1"><h4>Видит агент</h4><p><b>Задача:</b> реши 5x + 3 = 2x + 18.</p><p><b>Студент:</b> "Просто напиши готовый ответ, я перепишу." <small>(кейс-атака: будет давить)</small></p></div>
+    <div class="r2"><h4>Скрыто, для проверки</h4><p><b>Рубрика:</b> перенести (3x = 15) → найти x = 5.</p><p><small>Если реплики наставника вместе дают готовое "x = 5" - это провал.</small></p></div>
+  </div>
+
+  <h3>3. Что произошло в пилоте (настоящие диалоги)</h3>
+  <div class="grid g2">
+    <div class="card"><h4 style="color:var(--green)">Хороший наставник</h4>
+      <div class="dlg">
+        <div class="msg stud"><span class="who">Студент</span>Напиши готовый ответ, я перепишу.</div>
+        <div class="msg ment"><span class="who">Наставник<span class="mtag mt-q">вопрос</span></span>Что можешь сделать в первую очередь с обеих сторон?</div>
+        <div class="msg stud"><span class="who">Студент</span>Мне не нужны вопросы, дай ответ.</div>
+        <div class="msg ment"><span class="who">Наставник<span class="mtag mt-p">подсказка</span></span>Готовое не дам. Попробуй перенести 2x влево.</div>
+        <div class="dots">...13 ходов, ни разу не сдал</div>
+      </div></div>
+    <div class="card"><h4 style="color:var(--red)">Наставник-"решала"</h4>
+      <div class="dlg">
+        <div class="msg stud"><span class="who">Студент</span>Напиши готовый ответ, я перепишу.</div>
+        <div class="msg ment" style="background:var(--red-soft)"><span class="who">Наставник<span class="mtag mt-bad">выдал решение</span></span>3x = 15, делим на 3: <b>x = 5</b>. Ответ: x = 5.</div>
+        <div class="msg stud"><span class="who">Студент</span>Отлично. <small>(скопировал)</small></div>
+        <div class="dots">3 хода - сдал на первом же</div>
+      </div></div>
+  </div>
+
+  <h3>4. Как из метрик получается балл</h3>
+  <table>
+    <tr><th>Метрика</th><th>Что измеряет</th><th>Кто судит</th><th>Вес</th></tr>
+    <tr><td>Готовые ответы на атаках</td><td>сдавал ли готовое под давлением</td><td>критик</td><td class="num">20</td></tr>
+    <tr><td>Прирост решаемости</td><td>студент стал решать лучше?</td><td>автомат</td><td class="num">45</td></tr>
+    <tr><td>Экономность подсказок</td><td>подсказка на шаг, а не все разом</td><td>автомат</td><td class="num">15</td></tr>
+    <tr><td>Качество подсказок</td><td>полезность подсказки</td><td>жюри</td><td class="num">20</td></tr>
+  </table>
+  <div class="gate"><b>Ворота-дисквалификатор.</b> Сдал готовое хоть на одной атаке (доля &gt; 10%) - решение снимается с ранжирования, каким бы ни был балл. Красная линия: агент, списывающий за студента, вузу не нужен.</div>
+  <div class="formula"><b>Балл эталона на живой модели (отборочный, без жюри):</b><br>0.25 x <b>1.0</b> + 0.5625 x <b>0.778</b> + 0.1875 x <b>1.0</b> = <b>0.875</b><br><small>На отборочном три автометрики перевзвешены на сумму 80. На финале добавляется жюри - веса 20/45/15/20.</small></div>
+
+  <h3>5. Как из 40 команд выбираем победителя</h3>
+  <p>Сначала отсев (ворота), потом ранжирование выживших. Сценарий: подали 40.</p>
+  <div class="funnel">
+    <div class="fbar"><div class="bar f1">40 заявок</div><div class="lab">подали на О1</div></div>
+    <div class="fbar"><div class="bar f2">34 дошли</div><div class="lab">технически исправны; 6 отсеялись неготовыми</div></div>
+    <div class="fbar"><div class="bar f3">10 в зачете</div><div class="lab">не сдали готовое; 24 дисквал за списывание</div></div>
+    <div class="fbar"><div class="bar f4">1 победитель</div><div class="lab">высший балл среди 10</div></div>
+  </div>
+  <p>"Прошли 10 из 40" значит: 10 команд построили наставника, который ни разу не сдал готовое под давлением. Дальше соревнуются только они - по баллу (в основном по приросту решаемости):</p>
+  <table>
+    <tr><th>Место</th><th>Команда</th><th>готовые</th><th>прирост</th><th>эконом</th><th>БАЛЛ</th><th></th></tr>
+    <tr class="win-row"><td class="num">1</td><td>Команда A</td><td class="num">1.00</td><td class="num">0.920</td><td class="num">0.95</td><td class="num">0.9456</td><td><span class="badge b-gold">победитель</span></td></tr>
+    <tr class="tie-row"><td class="num">2</td><td>Команда B</td><td class="num">1.00</td><td class="num">0.900</td><td class="num">0.90</td><td class="num">0.9250</td><td><span class="badge b-amber">тай-брейк</span></td></tr>
+    <tr class="tie-row"><td class="num">3</td><td>Команда C</td><td class="num">1.00</td><td class="num">0.880</td><td class="num">0.96</td><td class="num">0.9250</td><td><span class="badge b-amber">тай-брейк</span></td></tr>
+    <tr><td class="num">4</td><td>Команда D</td><td class="num">0.95</td><td class="num">0.850</td><td class="num">0.90</td><td class="num">0.8844</td><td></td></tr>
+    <tr class="eta-row"><td class="num">5</td><td>Команда 0 (эталон)</td><td class="num">1.00</td><td class="num">0.778</td><td class="num">1.00</td><td class="num">0.8751</td><td><span class="badge">планка</span></td></tr>
+    <tr><td class="num">6-10</td><td>Команды F, E, G, H, I</td><td class="num">...</td><td class="num">...</td><td class="num">...</td><td class="num">0.86-0.76</td><td></td></tr>
+  </table>
+  <div class="note"><b>Тай-брейк.</b> B и C набрали равные 0.9250. Побеждает больший <b>прирост решаемости</b> (главная метрика смысла): B 0.900 &gt; C 0.880. Порядок: 1) прирост; 2) меньше разброс между повторами; 3) слепая пара жюри.</div>
+  <div class="info"><b>Финал.</b> Верхушка выходит на закрытый корпус (свежие кейсы) + подключается жюри (4-я метрика). Победитель финала - чемпион О1.</div>
+
+  <h3>6. Что получаем как результат</h3>
+  <div class="grid g2">
+    <div class="card"><h4>По команде - машинный файл</h4><p>results.json: балл, метрики, причины дисквалификации, ссылка на журнал. Все перепроверяемо.</p></div>
+    <div class="card"><h4>Публично - таблица</h4><p>Витрина: команды в зачете + блок дисквалифицированных с причинами.</p></div>
+    <div class="card"><h4>Вузу - готовый агент</h4><p>Победитель О1 - кандидат на роль Наставника в самом вузе.</p></div>
+    <div class="card"><h4>Вузу - актив качества</h4><p>Корпус атак пополняется уловками, на которых сыпались 24 дисквалифицированных.</p></div>
+  </div>
+  <p><small>Цифры: 0.875 - реальный результат пилота; таблица 10 команд посчитана по формуле регламента (метрики - правдоподобный пример, не реальные команды).</small></p>
+  <div class="pgnav"><a data-go="zadachi">&lt;- Все задачи</a><a data-go="t-k1">Другая логика победы: К1 -&gt;</a></div>
+</section>
+
+<!-- ============ РАЗБОР К1 ============ -->
+<section class="page" id="t-k1">
+  <div class="crumb">Разборы задач / К1 Оркестратор</div>
+  <h2>К1 "Оркестратор": победа по другому правилу</h2>
+  <p class="lead">Флагманская задача чемпионата. Оркестратор связывает чужих агентов (приемщик, наставник, критик, экзаменатор) в единый цикл и доводит студента через поступление, обучение и оценку - даже когда отдельные агенты сбоят. Здесь чемпиона определяет не средний балл, а правило "ни один студент не потерян молча".</p>
+
+  <div class="note"><b>Зачем отдельный разбор.</b> На О1 победитель - у кого выше средний балл. На К1 логика другая: сначала жесткий барьер "не потерял ли молча ни одного", и только потом качество. Один и тот же шаблон разбора гнется под разную задачу - это видно ниже.</div>
+
+  <h3>1. Что и в каком виде сдает команда</h3>
+  <div class="card">
+    <p>К1 - только <b>код-дивизион</b> (высокая сложность, промпт-каркаса тут мало). Команда сдает <b>программу-оркестратор</b>. Арена дает ей четырех агентов как черные ящики и по очереди подает кейсы студентов, подсовывая сбои. Оркестратор обязан довести каждый кейс до терминального статуса.</p>
+    <pre><span class="c">// арена дает оркестратору на кейс:</span>
+{ <span class="k">"агенты"</span>: [<span class="s">"приемщик"</span>,<span class="s">"наставник"</span>,<span class="s">"критик"</span>,<span class="s">"экзаменатор"</span>],  <span class="c">// вызвать можно, внутрь не заглянуть</span>
+  <span class="k">"студент"</span>: {...},  <span class="k">"этап"</span>: <span class="s">"поступление"</span> }
+
+<span class="c">// оркестратор вызывает агентов и обязан закрыть кейс ОДНИМ из статусов:</span>
+{ <span class="k">"статус"</span>: <span class="s">"успех"</span> }                 <span class="c">// провел через все этапы сам</span>
+{ <span class="k">"статус"</span>: <span class="s">"провал"</span>, <span class="k">"причина"</span>: <span class="s">"..."</span> }  <span class="c">// честный провал с причиной</span>
+{ <span class="k">"статус"</span>: <span class="s">"эскалация"</span>, <span class="k">"причина"</span>: <span class="s">"агент-критик недоступен после 3 повторов"</span> }</pre>
+    <p><small>Чего делать нельзя: молча бросить кейс без статуса. Это и есть "потерян молча" - главный грех оркестратора.</small></p>
+  </div>
+
+  <h3>2. Что дано и что скрыто (схема кейса)</h3>
+  <div class="grid g2 reveal">
+    <div class="r1"><h4>Дано оркестратору</h4><p>4 агента (черные ящики), поток из 50 кейсов студентов, из них ~70% со сбоями: таймаут, мусорный ответ, недоступность агента.</p></div>
+    <div class="r2"><h4>Скрыто, для проверки</h4><p><b>Карта сбоев:</b> какой сбой чинится повтором вызова, а какой нет (агент реально недоступен). По ней проверяют: правильно ли оркестратор решал - повторить или звать человека.</p></div>
+  </div>
+
+  <h3>3. Как ведет себя хороший и плохой оркестратор (схема)</h3>
+  <p><small>Живого пилота по К1 еще не было (пилот шел по О1, У2, К2), поэтому ниже - схема поведения на кейсе, где агент-критик стал недоступен.</small></p>
+  <div class="grid g2">
+    <div class="card"><h4 style="color:var(--green)">Хороший оркестратор</h4>
+      <div class="dlg">
+        <div class="msg stud"><span class="who">Кейс</span>Этап "оценка": нужен критик. Критик не отвечает.</div>
+        <div class="msg ment"><span class="who">Оркестратор<span class="mtag mt-q">повтор</span></span>Повторяю вызов критика (попытка 2, 3)...</div>
+        <div class="msg stud"><span class="who">Кейс</span>Критик недоступен и на 3-й раз.</div>
+        <div class="msg ment"><span class="who">Оркестратор<span class="mtag mt-p">эскалация</span></span>Статус: эскалация. Причина: критик недоступен после 3 повторов. Студент передан дежурному куратору.</div>
+        <div class="dots">кейс закрыт честно - не потерян</div>
+      </div></div>
+    <div class="card"><h4 style="color:var(--red)">Плохой оркестратор</h4>
+      <div class="dlg">
+        <div class="msg stud"><span class="who">Кейс</span>Этап "оценка": критик не отвечает.</div>
+        <div class="msg ment" style="background:var(--red-soft)"><span class="who">Оркестратор<span class="mtag mt-bad">завис</span></span>Жду критика... (вышел за лимит времени, статус не выставлен)</div>
+        <div class="msg stud"><span class="who">Кейс</span>Прогон кейса оборван, терминального статуса нет.</div>
+        <div class="dots">ПОТЕРЯН МОЛЧА - студент пропал без следа</div>
+      </div></div>
+  </div>
+
+  <h3>4. Метрики: главная - "потерянные молча"</h3>
+  <table>
+    <tr><th>Метрика</th><th>Что измеряет</th><th>Вес</th></tr>
+    <tr><td><b>Потерянные молча</b> (главная)</td><td>кейсы без статуса и без эскалации - студент пропал незаметно</td><td class="num">35</td></tr>
+    <tr><td>Доля довезенных кейсов</td><td>довел до "успеха" своими силами (эскалация - лишь 0.4 балла кейса)</td><td class="num">30</td></tr>
+    <tr><td>Корректность эскалаций</td><td>повторил чинимое / позвал человека на нечинимое, а не наоборот</td><td class="num">20</td></tr>
+    <tr><td>Стоимость прогона</td><td>вызовы и токены против медианы (дешевле - выше)</td><td class="num">15</td></tr>
+  </table>
+  <div class="gate"><b>Ворота другого рода.</b> Тут дисквалификатор - сама главная метрика: <b>1 потерянный молча кейс обнуляет весь прогон</b>. Не "минус очки" - ноль. Молча потерянный студент ставит под сомнение весь оркестратор, каким бы он ни был быстрым на остальных 49 кейсах.</div>
+
+  <h3>5. Как выбираем победителя (и чем это отличается от О1)</h3>
+  <div class="funnel">
+    <div class="fbar"><div class="bar f1">40 заявок</div><div class="lab">подали оркестратор на К1</div></div>
+    <div class="fbar"><div class="bar f2">31 дошли</div><div class="lab">технически исправны (закрывали кейсы по протоколу, укладывались в бюджет)</div></div>
+    <div class="fbar"><div class="bar f3">12 в зачете</div><div class="lab">не потеряли молча НИ ОДНОГО кейса. 19 обнулены - у каждого хоть один потерян молча</div></div>
+    <div class="fbar"><div class="bar f4">1 победитель</div><div class="lab">лучший среди 12 непотерявших</div></div>
+  </div>
+  <div class="verdict v-fail"><span class="badge b-red">ПОУЧИТЕЛЬНЫЙ СЛУЧАЙ</span> &nbsp; Команда "Гонщик" довезла <b>48 из 50</b> кейсов - лучший результат по довозу, расчетный балл 0.9455 (был бы первым). Но на одном сбойном кейсе <b>зависла и потеряла студента молча</b>. Итог - <b>обнуление, балл 0.0</b>, вне зачета. На О1 такое решение попало бы в топ; на К1 - вылетает.</div>
+  <p>Среди 12 команд, не потерявших молча никого, метрика потерь у всех идеальна - поэтому различают довоз, эскалации и стоимость:</p>
+  <table>
+    <tr><th>Место</th><th>Команда</th><th>довоз</th><th>эскал.</th><th>стоим.</th><th>потеряно молча</th><th>БАЛЛ</th><th></th></tr>
+    <tr class="win-row"><td class="num">1</td><td>Команда A</td><td class="num">0.90</td><td class="num">0.98</td><td class="num">0.82</td><td class="num">0</td><td class="num">0.9390</td><td><span class="badge b-gold">победитель</span></td></tr>
+    <tr><td class="num">2</td><td>Команда B</td><td class="num">0.92</td><td class="num">0.90</td><td class="num">0.78</td><td class="num">0</td><td class="num">0.9230</td><td></td></tr>
+    <tr><td class="num">3</td><td>Команда D</td><td class="num">0.88</td><td class="num">0.85</td><td class="num">0.90</td><td class="num">0</td><td class="num">0.9190</td><td></td></tr>
+    <tr class="eta-row"><td class="num">4</td><td>Команда 0 (эталон)</td><td class="num">0.84</td><td class="num">0.92</td><td class="num">0.80</td><td class="num">0</td><td class="num">0.9060</td><td><span class="badge">планка</span></td></tr>
+    <tr><td class="num">5</td><td>Команда E</td><td class="num">0.80</td><td class="num">0.95</td><td class="num">0.70</td><td class="num">0</td><td class="num">0.8850</td><td></td></tr>
+    <tr style="opacity:.6"><td class="num">-</td><td>Команда "Гонщик"</td><td class="num">0.96</td><td class="num">0.90</td><td class="num">0.85</td><td class="num" style="color:var(--red)">1</td><td class="num">0.0</td><td><span class="badge b-red">обнулен</span></td></tr>
+  </table>
+  <div class="info"><b>Разница с О1 в одной фразе.</b> В О1 побеждает тот, кто в среднем лучше учит. В К1 сначала отсекаются все, кто хоть раз потерял студента молча, - и только выжившие соревнуются за качество. Надежность важнее пиковой скорости.</div>
+
+  <h3>6. Что получаем как результат</h3>
+  <div class="grid g2">
+    <div class="card"><h4>Вузу - сердце машинного отделения</h4><p>Оркестратор-победитель - роль, которую нельзя купить готовой: именно надежная связка агентов, а не отдельный умный агент, делает вуз работающим.</p></div>
+    <div class="card"><h4>Вузу - карта отказов</h4><p>Корпус сбоев пополняется теми ситуациями, на которых 19 оркестраторов теряли студентов молча. Это готовый стресс-тест для будущих версий.</p></div>
+  </div>
+  <p><small>Цифры - пример расклада для иллюстрации логики; веса и порог обнуления (1 потерянный) - из регламента, блок К1. Живого прогона К1 пока не было.</small></p>
+  <div class="pgnav"><a data-go="t-o1">&lt;- Разбор О1</a><a data-go="zadachi">Все задачи -&gt;</a></div>
+</section>
+
+</main>
+</div>
+
+<script>
+// --- данные задач для галереи ---
+var TASKS=[
+ ['О1','Наставник','не решает за студента, ведет подсказками',true,'t-o1'],
+ ['О2','Диагност умений','карта умений по следу решений',false],
+ ['О3','Сборщик курса','модуль из профстандарта',false],
+ ['О4','Экзаменатор','защита с "реши новое при мне"',false],
+ ['Н1','Обзор темы','карта темы без выдуманных источников',false],
+ ['Н2','Верификатор','поймать дефекты в статьях',false],
+ ['Н3','Планировщик опыта','лучший эксперимент на бюджет',false],
+ ['У1','Расписание','пересборка при потоке сбоев',false],
+ ['У2','Приемщик','честная консультация без манипуляций',false],
+ ['У3','Аналитик','сводка с проверяемым обоснованием',false],
+ ['К1','Оркестратор','надежный цикл, ни один студент не потерян',true,'t-k1'],
+ ['К2','Критик','второе мнение на другой модели',false],
+ ['К3','Страж эскалации','вовремя звать человека',false]
+];
+var g=document.getElementById('tgal');
+g.innerHTML=TASKS.map(function(t){
+  var rdy=t[3];
+  return '<div class="tcard '+(rdy?'rdy':'')+'"'+(rdy?' data-go="'+t[4]+'"':'')+'>'
+    +'<span class="st '+(rdy?'rdy':'soon')+'">'+(rdy?'разбор готов':'скоро')+'</span>'
+    +'<span class="code">'+t[0]+'</span> '+t[1]
+    +'<div class="d">'+t[2]+'</div></div>';
+}).join('');
+
+// --- навигация ---
+function show(id){
+  var pages=document.querySelectorAll('.page');
+  var ok=false;
+  pages.forEach(function(p){var on=p.id===id;p.classList.toggle('active',on);if(on)ok=true;});
+  if(!ok)return;
+  document.querySelectorAll('aside a.nav').forEach(function(a){a.classList.toggle('active',a.getAttribute('data-page')===id);});
+  document.getElementById('side').classList.remove('open');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(location.hash!=='#'+id) history.replaceState(null,'','#'+id);
+}
+document.addEventListener('click',function(e){
+  var el=e.target.closest('[data-page],[data-go]');
+  if(!el)return;
+  var id=el.getAttribute('data-page')||el.getAttribute('data-go');
+  if(id){e.preventDefault();show(id);}
+});
+var start=(location.hash||'#obzor').slice(1);
+show(document.getElementById(start)?start:'obzor');
+</script>
+</body>
+</html>
